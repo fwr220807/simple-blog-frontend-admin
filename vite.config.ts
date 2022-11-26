@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Icons from 'unplugin-icons/vite'
 import Unocss from 'unocss/vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -24,5 +25,17 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    // Icons({
+    //   defaultClass: 'inline',
+    //   defaultStyle: 'vertical-align: sub;',
+    // }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
+  },
 })
