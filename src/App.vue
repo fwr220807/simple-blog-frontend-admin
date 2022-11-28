@@ -1,15 +1,12 @@
+<!--
+* @Description: App 页面
+* @Author: Wren Fan
+* @Date: 2022-11-28 16:49:51
+* @LastEditTime: 2022-11-28 16:49:51
+* @LastEditors: Wren Fan
+-->
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { login } from "./api/user";
-
-const click = async function () {
-  const result = await login({
-    email: "admin@admin.com",
-    password: "admin888",
-  });
-
-  console.log(result);
-};
+import { onMounted } from 'vue'
 </script>
 
 <template>
@@ -20,4 +17,6 @@ const click = async function () {
   <router-view />
 </template>
 
-<style></style>
+<style>
+
+</style>

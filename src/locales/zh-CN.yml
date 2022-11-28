@@ -1,0 +1,9 @@
+login:
+  title: 系统登陆
+  logIn: 登陆
+  username: 账号
+  password: 密码
+  usernameIsNotEmptyRule: 用户名不能为空
+  passwordIsNotEmptyRule: 密码不能为空
+  passwordLengthRule: 长度应该在 6 到 18 之间
+  success: 登陆成功

@@ -7,50 +7,87 @@
 -->
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
-import { nextTick, reactive, ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import 'element-plus/es/components/message/style/css'
+import { nextTick, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/store/user'
+import { useSleep } from '@/hooks/useCommon'
+import type { ObjType } from '@/typings/common'
 
-const username = ref('123')
+const { t } = useI18n()
+// form
 const loginForm = reactive({
   username: 'admin',
-  password: '111111',
+  password: 'admin888',
 })
+// el-form 的规则
+const rules: FormRules = {
+  username: [{ required: true, message: t('login.usernameIsNotEmptyRule') }],
+  password: [
+    { required: true, message: t('login.passwordIsNotEmptyRule') },
+    { min: 6, max: 18, message: t('login.passwordLengthRule') },
+  ],
+}
+
+// 状态
+const state: ObjType = reactive({
+  otherQuery: {},
+  redirect: undefined,
+})
+// 除去 redirect 参数
+const getOtherQuery = (query: any) => {
+  return Object.keys(query).reduce((acc: any, cur: any) => {
+    if (cur !== 'redirect')
+      acc[cur] = query[cur]
+
+    return acc
+  }, {})
+}
+const route = useRoute()
+watch(() => route.query, (query) => {
+  if (query) {
+    state.redirect = query.redirect
+    state.otherQuery = getOtherQuery(query)
+  }
+}, { immediate: true })
 
 // 检测是否在大写状态，如果是则控制 capsTooltip 显示提示
 const capsTooltip = ref(false)
 const checkCapsLock = function (e: KeyboardEvent) {
   const { key } = e
-  capsTooltip.value = Boolean(key) && key.length === 1 && (key >= 'A' && key <= 'Z')
-}
-// el-form 的规则
-const rules: FormRules = {
-  username: [{ required: true, message: 'The username can not be empty' }],
-  password: [
-    { required: true, message: 'The password can not be empty' },
-    { min: 6, max: 18, message: 'Length should be 6 to 18' },
-  ],
+  capsTooltip.value
+    = Boolean(key) && key.length === 1 && key >= 'A' && key <= 'Z'
 }
 
 // 控制登陆
+const router = useRouter()
 const loading = ref(false)
 const tipMessage = ref('')
 const loginFormEl = ref<FormInstance>()
-const handleLogin = function () {
-  loginFormEl.value?.validate((isValid: boolean) => {
-    if (isValid)
-      loginReq()
-    else
-      return false
-  })
-}
 // 登陆请求
 const loginReq = function () {
   loading.value = true
   const userStore = useUserStore()
-  userStore.login(loginForm).then(() => {
+  userStore
+    .login(loginForm)
+    .then(() => {
+      ElMessage({ message: t('login.success'), type: 'success' })
+      // 如果 login 页面是重定向进来，则回到 redirect 页面
+      router.push({ path: state.redirect || '/', query: state.otherQuery })
+    })
+    .catch((error) => {
+      tipMessage.value = error.msg
+      useSleep(30).then(() => loading.value = false)
+    })
+}
 
-  }).catch((error) => {
-    tipMessage.value = error.msg
+const handleLogin = function () {
+  loginFormEl.value?.validate((isValid: boolean) => {
+    if (isValid)
+      loginReq()
+    else return false
   })
 }
 
@@ -60,8 +97,7 @@ const passwordType = ref('password')
 const showPwd = function () {
   if (passwordType.value === 'password')
     passwordType.value = ''
-  else
-    passwordType.value = 'password'
+  else passwordType.value = 'password'
 
   nextTick(() => {
     password.value?.focus()
@@ -72,11 +108,12 @@ const showPwd = function () {
 <template>
   <div class="login-container" min-h-screen w-screen overflow-hidden>
     <el-form ref="loginFormEl" class="login-form" :model="loginForm" :rules="rules" autocomplete="on"
-      label-position="left">
+             label-position="left"
+    >
       <!-- 标题 -->
       <div class="title-container" relative>
         <h3 class="title" text-26px text-gray-1 m-x-auto m-t-0 m-b-40px text-center font-bold>
-          Login Form
+          {{ t('login.title') }}
         </h3>
       </div>
       <!-- 用户名 -->
@@ -84,29 +121,36 @@ const showPwd = function () {
         <span class="svg-container" flex justify-center items-center text-gray-4 inline-block text-4 p-l-11px>
           <div i-ooui:user-avatar />
         </span>
-        <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text"
-          tabindex="2" autocomplete="on" />
+        <el-input ref="username" v-model="loginForm.username" :placeholder="t('login.username')" name="username"
+                  type="text" tabindex="2" autocomplete="on"
+        />
       </el-form-item>
       <!-- 密码 + 大小写提示 -->
       <!-- tirrger 和 trigger-keys 设置防止自身触发提示 -->
       <el-tooltip v-model:visible="capsTooltip" trigger="" :trigger-keys="[]" content="Caps lock is On"
-        placement="right">
+                  placement="right"
+      >
         <el-form-item prop="password">
           <span class="svg-container" flex justify-center items-center text-gray-4 inline-block text-4 p-l-11px>
             <div i-ri:lock-password-fill />
           </span>
           <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
-            placeholder="Password" name="password" tabindex="2" autocomplete="on" @keyup="checkCapsLock"
-            @blur="capsTooltip = false" @keyup.enter="handleLogin" />
+                    :placeholder="t('login.password')" name="password" tabindex="2" autocomplete="on" @keyup="checkCapsLock"
+                    @blur="capsTooltip = false" @keyup.enter="handleLogin"
+          />
           <span class="show-pwd" text-4 cursor-pointer select-none text-gray-4 @click="showPwd">
-            <div :class="passwordType === 'password' ? 'i-ph:eye-closed' : 'i-ph:eye'" />
+            <div :class="
+              passwordType === 'password' ? 'i-ph:eye-closed' : 'i-ph:eye'
+            "
+            />
           </span>
         </el-form-item>
       </el-tooltip>
       <!-- 登录按钮 -->
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px; padding:15px 15px;"
-        @click.prevent="handleLogin">
-        Login
+      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px; padding: 15px 15px"
+                 @click.prevent="handleLogin"
+      >
+        {{ t('login.logIn') }}
       </el-button>
     </el-form>
   </div>
@@ -162,7 +206,6 @@ const showPwd = function () {
         }
       }
     }
-
   }
 }
 </style>

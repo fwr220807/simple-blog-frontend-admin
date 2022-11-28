@@ -1,3 +1,9 @@
 {
-  "extends": "@antfu"
+  "extends": "@antfu",
+  "rules":{
+    "vue/first-attribute-linebreak": ["error", {
+      "singleline": "beside",
+      "multiline": "beside"
+    }]
+  }
 }

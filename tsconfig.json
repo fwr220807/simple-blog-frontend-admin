@@ -13,7 +13,7 @@
 		"lib": ["ESNext", "DOM"],
 		"skipLibCheck": true,
 		"noEmit": true,
-		"types": ["element-plus/global","node"],
+		"types": ["element-plus/global","node","@intlify/vite-plugin-vue-i18n/client"],
 		"paths": {
 			"@/*": ["src/*"]
 		}

@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import Icons from 'unplugin-icons/vite'
+import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Unocss from 'unocss/vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -21,14 +21,16 @@ export default defineConfig({
     // Element-plus 的按需及自动引入
     AutoImport({
       resolvers: [ElementPlusResolver()],
+      imports: [],
     }),
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    // Icons({
-    //   defaultClass: 'inline',
-    //   defaultStyle: 'vertical-align: sub;',
-    // }),
+    VueI18n({
+      runtimeOnly: true,
+      compositionOnly: true,
+      include: [resolve(__dirname, './src/locales/**')],
+    }),
   ],
   server: {
     proxy: {

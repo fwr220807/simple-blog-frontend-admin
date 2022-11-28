@@ -1,3 +1,10 @@
+/*
+* @Description:
+* @Author: Wren Fan
+* @Date: 2022-11-28 18:25:25
+* @LastEditors: Wren Fan
+* @LastEditTime: 2022-11-28 18:25:25
+**/
 import { defineStore } from 'pinia'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 import { loginReq } from '@/api/user'
