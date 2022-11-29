@@ -12,6 +12,7 @@ import messages from '@intlify/vite-plugin-vue-i18n/messages'
 import App from './App.vue'
 import { router } from '@/router/index'
 import '@unocss/reset/tailwind.css'
+import '@/styles/index.css'
 import 'uno.css'
 
 // 语言国际化，messages 具体内容地址在 vite.config 插件的 includes 中

@@ -6,7 +6,7 @@
 * @LastEditTime: 2022-11-28 18:25:25
 **/
 import { defineStore } from 'pinia'
-import { getToken, removeToken, setToken } from '@/utils/auth'
+import { getToken, removeToken, setToken } from '@/utils/cookies'
 import { loginReq } from '@/api/user'
 import type { ObjType } from '@/typings/common'
 
@@ -22,8 +22,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     resetToken() {
       return new Promise((resolve) => {
-        this.token = ''
-        this.roles = []
+        this.$reset()
         removeToken()
         resolve(null)
       })
