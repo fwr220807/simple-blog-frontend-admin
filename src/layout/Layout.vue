@@ -6,19 +6,27 @@
 * @LastEditTime: 2022-11-28 18:22:58
 -->
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { device, sidebar } from './resize'
+import { computed, watch } from 'vue'
+import { resize } from './resize'
 import { AppMain, Navbar, Sidebar } from './components'
+import RightPanel from '@/components/RightPanel/index.vue'
 import { Device } from '@/constant/device'
 import { useAppStore } from '@/store/app'
+import { useSettingsStore } from '@/store/settings'
+
+const { sidebar, device } = resize()
 
 const classObj = computed(() => {
   return {
     hideSidebar: !sidebar.value.opened,
     openSidebar: sidebar.value.opened,
-    mobile: device.value === Device.Mobile,
     withoutAnimation: sidebar.value.withoutAnimation,
+    mobile: device.value === Device.Mobile,
   }
+})
+
+const fixedHeader = computed(() => {
+  return 1
 })
 
 const appStore = useAppStore()
@@ -26,24 +34,37 @@ const appStore = useAppStore()
 const handleClickOutside = () => {
   appStore.closeSidebar(false)
 }
+
+const settingsStore = useSettingsStore()
+const showSettings = computed(() => settingsStore.showSettings)
 </script>
 
 <template>
-  <div :class="classObj" class="app-wrapper" flex h-full w-full>
+  <div :class="classObj" class="app-wrapper" relative flex h-full w-full>
     <div v-if="classObj.mobile && sidebar.opened"
-         class="drawer-bg"
+         class="drawer-bg bg-#000"
+         absolute top-0 opacity-30 w-full h-full z-999
          @click="handleClickOutside"
     />
     <Sidebar class="sidebar-container" h-full w-full />
     <div class="main-container" h-full w-full>
-      <Navbar />
+      <div :class="{ 'fixed-header': fixedHeader }">
+        <Navbar />
+      </div>
       <AppMain />
+      <RightPanel v-if="showSettings">
+        <Settings />
+      </RightPanel>
     </div>
+    <button @click="appStore.toggleSidebar()">
+      btn
+    </button>
   </div>
 </template>
 
 <style lang="less" scoped>
 .app-wrapper {
+
   .sidebar-container {
     width: 210px;
     background-color: pink;
@@ -52,6 +73,38 @@ const handleClickOutside = () => {
   .main-container {
     flex: 1;
     background-color: aquamarine;
+  }
+}
+
+.hideSidebar {
+  .sidebar-container {
+    width: 54px;
+  }
+}
+
+.mobile {
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    width: 210px;
+    transition: transform .28s;
+  }
+
+  &.openSidebar {
+  }
+
+  &.hideSidebar {
+    .sidebar-container {
+      pointer-events: none;
+      transform: translate(-210px);
+    }
+  }
+}
+
+.withoutAnimation {
+  .main-container,
+  .sidebar-container {
+    transition: none;
   }
 }
 </style>

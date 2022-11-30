@@ -36,5 +36,8 @@ export const useAppStore = defineStore('app', {
       this.sidebar.withoutAnimation = withoutAnimation
       setSidebarStatus('closed')
     },
+    toggleDevice(device: Device) {
+      this.device = device
+    },
   },
 })
