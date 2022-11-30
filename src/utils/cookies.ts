@@ -20,3 +20,6 @@ export const setLanguage = (language: string) => Cookies.set(CookiesKeys.LANGUAG
 
 export const getSize = () => Cookies.get(CookiesKeys.SIZE)
 export const setSize = (size: string) => Cookies.set(CookiesKeys.SIZE, size)
+
+export const getTheme = () => Cookies.get(CookiesKeys.THEME)
+export const setTheme = (color: string) => Cookies.set(CookiesKeys.THEME, color)

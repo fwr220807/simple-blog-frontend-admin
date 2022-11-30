@@ -18,16 +18,19 @@ defineProps({
 })
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
+
 const show = ref(false)
 </script>
 
 <template>
-  <div class="handle-button text-#fff" :style="{ top: `${buttonTop}px`, backgroundColor: theme }" absolute right-0px w-48px h-48px lh-48px text-center z-99 cursor-pointer pointer-events-auto @click="(show = true)">
-    <div text-24px lh-48px :class="show ? 'i-ep:close' : 'i-ep:setting'" />
+  <div class="right-panel">
+    <div class="handle-button text-#fff" :style="{ top: `${buttonTop}px`, backgroundColor: theme }" absolute right-0px flex justify-center items-center w-48px h-48px z-99 cursor-pointer pointer-events-auto @click="(show = true)">
+      <i text-24px class="i-ep:setting" />
+    </div>
+    <el-drawer v-model="show" size="300px" destroy-on-close>
+      <slot />
+    </el-drawer>
   </div>
-  <el-drawer v-model="show" title="设置" size="300px" destroy-on-close>
-    <slot />
-  </el-drawer>
 </template>
 
 <style lang="less" scoped>

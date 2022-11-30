@@ -7,3 +7,10 @@ login:
   passwordIsNotEmptyRule: 密码不能为空
   passwordLengthRule: 长度应该在 6 到 18 之间
   success: 登陆成功
+settings:
+  title: '系统布局配置'
+  theme: '主题色'
+  showTagsView: '显示 Tags-View'
+  showSidebarLogo: '显示侧边栏 Logo'
+  fixedHeader: '固定 Header'
+  sidebarTextTheme: '侧边栏文字主题色'

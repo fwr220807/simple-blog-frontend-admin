@@ -8,8 +8,9 @@
 
 import { defineStore } from 'pinia'
 import layoutSettings from '@/config/default/layout'
+import { getTheme } from '@/utils/cookies'
 
-interface SettingsState {
+export interface SettingsState {
   theme: string
   fixedHeader: boolean
   showSettings: boolean
@@ -18,14 +19,14 @@ interface SettingsState {
   sidebarTextTheme: boolean
 }
 
-function setProp<T, K extends keyof T, M extends T[K]>(obj: T, key: K, value: M) {
+function setProp<T, K extends keyof T>(obj: T, key: K, value: T[K]) {
   return obj[key] = value
 }
 
 export const useSettingsStore = defineStore('settings', {
   state: () => {
     const state: SettingsState = {
-      theme: 'primary',
+      theme: getTheme() || '#1890ff',
       fixedHeader: layoutSettings.fixedHeader,
       showSettings: layoutSettings.showSettings,
       showTagsView: layoutSettings.showTagsView,

@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import { computed, watch } from 'vue'
 import { resize } from './resize'
-import { AppMain, Navbar, Sidebar } from './components'
+import { AppMain, Navbar, Settings, Sidebar } from './components'
 import RightPanel from '@/components/RightPanel/index.vue'
 import { Device } from '@/constant/device'
 import { useAppStore } from '@/store/app'
@@ -56,9 +56,6 @@ const showSettings = computed(() => settingsStore.showSettings)
         <Settings />
       </RightPanel>
     </div>
-    <button @click="appStore.toggleSidebar()">
-      btn
-    </button>
   </div>
 </template>
 

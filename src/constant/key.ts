@@ -11,4 +11,5 @@ export enum CookiesKeys {
   LANGUAGE = 'Simple-Blog-Admin-LanguageKey',
   SIZE = 'Simple-Blog-Admin-SizeKey',
   TOKEN = 'Simple-Blog-Admin-Token',
+  THEME = 'Simple-Blog-Admin-Theme',
 }
