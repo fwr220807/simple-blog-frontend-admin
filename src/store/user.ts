@@ -7,16 +7,19 @@
 **/
 import { defineStore } from 'pinia'
 import { getToken, removeToken, setToken } from '@/utils/cookies'
-import { loginReq } from '@/api/user'
+import { getInfoReq, loginReq } from '@/api/user'
 import type { ObjType } from '@/typings/common'
 
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
       token: getToken(),
+      username: '',
+      email: '',
       name: '',
       avatar: '',
-      roles: [],
+      website: '',
+      roles: [] as Array<string>,
     }
   },
   actions: {
@@ -39,6 +42,27 @@ export const useUserStore = defineStore('user', {
           else {
             reject(res)
           }
+        }).catch((error: any) => {
+          reject(error)
+        })
+      })
+    },
+    getInfo() {
+      return new Promise((resolve, reject) => {
+        getInfoReq().then((response: ObjType) => {
+          const { data } = response
+          if (!data)
+            throw new Error('Verification failed, please Login again.')
+
+          const { username, email, name, avatar, website, role } = data
+          this.username = username
+          this.email = email
+          this.name = name
+          this.avatar = avatar
+          this.website = website
+          this.roles = [role]
+
+          resolve(data)
         }).catch((error: any) => {
           reject(error)
         })

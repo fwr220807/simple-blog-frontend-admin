@@ -6,4 +6,5 @@
 * @LastEditTime: 2022-11-29 23:12:59
 **/
 
-export const layoutSettings = import('./layout')
+export const layoutSettings = import('./layout.config')
+export const settings = import('./settings.config')

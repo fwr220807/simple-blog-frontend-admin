@@ -7,25 +7,14 @@
 **/
 
 import { defineStore } from 'pinia'
-import layoutSettings from '@/config/default/layout'
+import layoutSettings from '@/config/default/layout.config'
 import { getTheme } from '@/utils/cookies'
-
-export interface SettingsState {
-  theme: string
-  fixedHeader: boolean
-  showSettings: boolean
-  showTagsView: boolean
-  showSidebarLogo: boolean
-  sidebarTextTheme: boolean
-}
-
-function setProp<T, K extends keyof T>(obj: T, key: K, value: T[K]) {
-  return obj[key] = value
-}
+import type { SettingsStateType } from '@/typings/store'
+import { setProp } from '@/hooks/useCommon'
 
 export const useSettingsStore = defineStore('settings', {
   state: () => {
-    const state: SettingsState = {
+    const state: SettingsStateType = {
       theme: getTheme() || '#1890ff',
       fixedHeader: layoutSettings.fixedHeader,
       showSettings: layoutSettings.showSettings,
@@ -38,7 +27,7 @@ export const useSettingsStore = defineStore('settings', {
   },
   actions: {
     // 传入键值对，修改对应的 setting 值
-    changeSetting(key: keyof SettingsState, value: boolean | string) {
+    changeSetting(key: keyof SettingsStateType, value: boolean | string) {
       this.$patch((state) => {
         setProp(state, key, value)
       })

@@ -1,5 +1,5 @@
 /*
-* @Description: 管理 cookies 的键值
+* @Description: 管理 cookies 的枚举键值
 * @Author: Wren Fan
 * @Date: 2022-11-29 10:15:44
 * @LastEditors: Wren Fan

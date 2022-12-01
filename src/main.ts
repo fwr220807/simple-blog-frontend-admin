@@ -14,6 +14,7 @@ import { router } from '@/router/index'
 import '@unocss/reset/tailwind.css'
 import '@/styles/index.css'
 import 'uno.css'
+import './permission' // 导入全局路由守卫，控制页面路由权限
 
 // 语言国际化，messages 具体内容地址在 vite.config 插件的 includes 中
 const i18n = createI18n({

@@ -10,10 +10,32 @@ import type { RouterType } from '@/typings/router'
 
 import Layout from '@/layout/Layout.vue'
 
-const constantRoutes: RouterType = [
+export const constantRoutes: RouterType = [
+  // ** 这个 /redirect 路由还不知道干啥用的
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/pages/redirect.vue'),
+      },
+    ],
+  },
   {
     path: '/login',
     component: () => import('@/pages/login/login.vue'),
+    hidden: true,
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/error-page/404.vue'),
+    hidden: true,
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/error-page/401.vue'),
     hidden: true,
   },
   {
@@ -26,11 +48,13 @@ const constantRoutes: RouterType = [
         name: 'Dashboard',
         component: () => import('@/pages/dashboard/dashboard.vue'),
         // using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'Dashboard', elSvgIcon: 'Fold' },
+        meta: { title: 'Dashboard' },
       },
     ],
   },
 ]
+
+export const asyncRoutes: RouterType = []
 
 export const router = createRouter({
   history: createWebHashHistory(),
