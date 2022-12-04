@@ -4,6 +4,7 @@ export interface RouteItemType {
   hidden?: boolean
   meta?: {
     title: string
+    icon?: string
     roles?: Array<string>
   }
   children?: RouterType

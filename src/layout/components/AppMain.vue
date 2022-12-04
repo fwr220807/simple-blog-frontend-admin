@@ -11,6 +11,7 @@ const toggleSidebar = appStore.toggleSidebar
     <button @click="toggleSidebar">
       侧边栏伸缩
     </button>
+    <router-view />
   </div>
 </template>
 

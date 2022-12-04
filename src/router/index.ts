@@ -5,6 +5,7 @@
 * @LastEditors: Wren Fan
 * @LastEditTime: 2022-11-28 18:24:53
 **/
+// @unocss-include
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouterType } from '@/typings/router'
 
@@ -30,12 +31,12 @@ export const constantRoutes: RouterType = [
   },
   {
     path: '/404',
-    component: () => import('@/views/error-page/404.vue'),
+    component: () => import('@/pages/404.vue'),
     hidden: true,
   },
   {
     path: '/401',
-    component: () => import('@/views/error-page/401.vue'),
+    component: () => import('@/pages/401.vue'),
     hidden: true,
   },
   {
@@ -48,13 +49,96 @@ export const constantRoutes: RouterType = [
         name: 'Dashboard',
         component: () => import('@/pages/dashboard/dashboard.vue'),
         // using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'Dashboard' },
+        meta: { title: 'Dashboard', icon: 'i-ant-design:dashboard-filled' },
+      },
+    ],
+  },
+  {
+    path: '/posts',
+    component: Layout,
+    meta: { title: 'Posts', icon: 'i-fluent:code-16-regular' },
+    children: [
+      {
+        path: 'view',
+        component: () => import('@/pages/posts/view.vue'),
+        name: 'View',
+        meta: { title: 'View', icon: 'i-ic:sharp-remove-red-eye' },
+      },
+      {
+        path: 'edit',
+        component: () => import('@/pages/posts/edit.vue'),
+        name: 'Edit',
+        meta: { title: 'Edit', icon: 'i-tabler:edit' },
+      },
+      {
+        path: 'category',
+        component: () => import('@/pages/posts/category.vue'),
+        name: 'Category',
+        meta: { title: 'Category', icon: 'i-ic:baseline-class' },
+      },
+    ],
+  },
+  {
+    path: '/comments',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Comments',
+        component: () => import('@/pages/comments/index.vue'),
+        meta: { title: 'Comments', icon: 'i-fluent:comment-multiple-28-filled' },
+      },
+    ],
+  },
+  {
+    path: '/projects',
+    component: Layout,
+    meta: { title: 'Projects', icon: 'i-fluent-mdl2:test-beaker-solid' },
+    children: [
+      {
+        path: 'list',
+        name: 'ProjectsList',
+        component: () => import('@/pages/projects/list.vue'),
+        meta: { title: 'ProjectsList', icon: 'i-ic:sharp-remove-red-eye' },
+      },
+      {
+        path: 'edit',
+        name: 'ProjectsEdit',
+        component: () => import('@/pages/projects/edit.vue'),
+        meta: { title: 'ProjectsEdit', icon: 'i-tabler:edit' },
+      },
+    ],
+  },
+  {
+    path: '/friends',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Friends',
+        component: () => import('@/pages/friends/index.vue'),
+        meta: { title: 'Friends', icon: 'i-ion:people' },
       },
     ],
   },
 ]
 
-export const asyncRoutes: RouterType = []
+export const asyncRoutes: RouterType = [
+  {
+    path: '/permission',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Permission',
+        component: () => import('@/pages/permission/index.vue'),
+        meta: { title: 'Permission', roles: ['admin'], icon: 'i-fluent-mdl2:permissions-solid' },
+      },
+    ],
+  },
+  // 匹配 404 路由必须要放到最后
+  { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true },
+]
 
 export const router = createRouter({
   history: createWebHashHistory(),

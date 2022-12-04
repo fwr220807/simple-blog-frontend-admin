@@ -12,7 +12,7 @@ service.interceptors.request.use((config) => {
   const userStore = useUserStore()
 
   if (userStore.token)
-    config.headers!['X-Token'] = getToken()
+    config.headers!.Authorization = `Bearer ${getToken()}`
 
   return config
 }, (error) => {

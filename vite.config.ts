@@ -15,6 +15,11 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  define: {
+    // fix "path" module issue
+    'process.platform': null,
+    'process.version': null,
+  },
   plugins: [
     vue(),
     Unocss(),

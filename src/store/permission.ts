@@ -9,7 +9,7 @@ import { defineStore } from 'pinia'
 import { asyncRoutes, constantRoutes } from '@/router'
 import type { PermissionStateType } from '@/typings/store'
 import type { RouteItemType, RouterType } from '@/typings/router'
-
+// 判断权限逻辑
 const hasPermission = (roles: Array<string>, route: RouteItemType) => {
   if (route.meta && route.meta.roles)
     return roles.some(role => route.meta?.roles?.includes(role))

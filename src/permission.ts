@@ -48,6 +48,8 @@ router.beforeEach(async (to, from, next) => {
           accessRoutes.forEach((route: RouterRowType) => {
             router.addRoute(route)
           })
+
+          next({ ...to, replace: true })
         }
         catch (error) {
           await userStore.resetToken()
