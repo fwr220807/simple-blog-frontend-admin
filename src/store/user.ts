@@ -9,6 +9,7 @@ import { defineStore } from 'pinia'
 import { getToken, removeToken, setToken } from '@/utils/cookies'
 import { getInfoReq, loginReq } from '@/api/user'
 import type { ObjType } from '@/typings/common'
+import { resetRouter } from '@/router'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -23,10 +24,12 @@ export const useUserStore = defineStore('user', {
     }
   },
   actions: {
-    resetToken() {
+    resetState() {
       return new Promise((resolve) => {
-        this.$reset()
+        // 去除 token 的 cookies
         removeToken()
+        // 重置状态
+        this.$reset()
         resolve(null)
       })
     },
@@ -65,6 +68,15 @@ export const useUserStore = defineStore('user', {
           resolve(data)
         }).catch((error: any) => {
           reject(error)
+        })
+      })
+    },
+    logout() {
+      return new Promise((resolve) => {
+        this.resetState().then(() => {
+          // 清除添加的动态路由
+          resetRouter()
+          resolve(null)
         })
       })
     },

@@ -23,7 +23,7 @@ const layoutSettings: LayoutSettings = {
   showSettings: true,
   showTagsView: true,
   fixedHeader: false,
-  showSidebarLogo: true,
+  showSidebarLogo: false,
   sidebarTextTheme: true,
 }
 

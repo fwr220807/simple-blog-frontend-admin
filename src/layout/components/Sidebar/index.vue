@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import SidebarItem from './SidebarItem.vue'
-import Logo from './SidebarLogo.vue'
+import SidebarLogo from './SidebarLogo.vue'
 import { useSettingsStore } from '@/store/settings'
 import { useAppStore } from '@/store/app'
 import { usePermissionStore } from '@/store/permission'
@@ -24,9 +24,9 @@ const permissionStore = usePermissionStore()
 
 <template>
   <div :class="{ 'has-logo': showLogo }">
-    <Logo v-if="showLogo" :collapse="false" />
-    <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu default-active="1" :collapse="isCollapse" background-color="#fff" text-color="#333" active-text-color="#123456" :collapse-transition="false">
+    <el-scrollbar wrap-class="scrollbar-wrapper" view-style="height: 100%">
+      <SidebarLogo v-if="showLogo" :collapse="!isCollapse" bg-white />
+      <el-menu class="el-menu-vertical" default-active="1" :collapse="!isCollapse" background-color="#fff" text-color="#333" active-text-color="#123456" :collapse-transition="false">
         <SidebarItem v-for="route in permissionStore.routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
@@ -34,4 +34,11 @@ const permissionStore = usePermissionStore()
 </template>
 
 <style lang="less" scoped>
+.el-menu-vertical {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  // 清除 el-menu 的样式
+  border-right:0px;
+}
 </style>

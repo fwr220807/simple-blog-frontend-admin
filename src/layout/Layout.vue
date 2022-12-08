@@ -6,7 +6,7 @@
 * @LastEditTime: 2022-11-28 18:22:58
 -->
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { resize } from './resize'
 import { AppMain, Navbar, Settings, Sidebar } from './components'
 import RightPanel from '@/components/RightPanel/index.vue'
@@ -25,10 +25,6 @@ const classObj = computed(() => {
   }
 })
 
-const fixedHeader = computed(() => {
-  return 1
-})
-
 const appStore = useAppStore()
 // 关闭 Sidebar
 const handleClickOutside = () => {
@@ -37,16 +33,18 @@ const handleClickOutside = () => {
 
 const settingsStore = useSettingsStore()
 const showSettings = computed(() => settingsStore.showSettings)
+const fixedHeader = computed(() => settingsStore.fixedHeader)
 </script>
 
 <template>
   <div :class="classObj" class="app-wrapper" relative flex h-full w-full>
+    <!-- mobile 状态下 Sidebar 侧边栏打开状态下的灰幕，点击隐藏 Sidebar -->
     <div v-if="classObj.mobile && sidebar.opened"
          class="drawer-bg bg-#000"
          absolute top-0 opacity-30 w-full h-full z-999
          @click="handleClickOutside"
     />
-    <Sidebar class="sidebar-container" h-full w-full />
+    <Sidebar class="sidebar-container" h-full w-210px z-1001 />
     <div class="main-container" h-full w-full>
       <div :class="{ 'fixed-header': fixedHeader }">
         <Navbar />
@@ -61,12 +59,9 @@ const showSettings = computed(() => settingsStore.showSettings)
 
 <style lang="less" scoped>
 .app-wrapper {
-
   .sidebar-container {
-    width: 210px;
-    background-color: pink;
-  }
-
+      transition: width 0.28s;
+    }
   .main-container {
     flex: 1;
     background-color: aquamarine;
@@ -76,6 +71,12 @@ const showSettings = computed(() => settingsStore.showSettings)
 .hideSidebar {
   .sidebar-container {
     width: 54px;
+
+    :deep(.el-sub-menu)  {
+      .el-sub-menu__icon-arrow  {
+        display: none;
+      }
+    }
   }
 }
 

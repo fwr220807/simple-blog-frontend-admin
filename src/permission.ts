@@ -52,7 +52,7 @@ router.beforeEach(async (to, from, next) => {
           next({ ...to, replace: true })
         }
         catch (error) {
-          await userStore.resetToken()
+          await userStore.resetState()
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }

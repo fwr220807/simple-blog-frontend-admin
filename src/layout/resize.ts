@@ -1,9 +1,9 @@
 /*
-* @Description: 根据大小变化重新布局
+* @Description: 根据页面大小变化计算设置 appStore.device 值并重新布局
 * @Author: Wren Fan
 * @Date: 2022-11-29 12:54:45
 * @LastEditors: Wren Fan
-* @LastEditTime: 2022-11-29 12:54:45
+* @LastEditTime: 2022-12-7 12:54:45
 **/
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'

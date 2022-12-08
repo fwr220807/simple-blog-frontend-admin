@@ -10,6 +10,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouterType } from '@/typings/router'
 
 import Layout from '@/layout/Layout.vue'
+import { usePermissionStore } from '@/store/permission'
 
 export const constantRoutes: RouterType = [
   // ** 这个 /redirect 路由还不知道干啥用的
@@ -56,6 +57,7 @@ export const constantRoutes: RouterType = [
   {
     path: '/posts',
     component: Layout,
+    redirect: '/posts/view',
     meta: { title: 'Posts', icon: 'i-fluent:code-16-regular' },
     children: [
       {
@@ -93,6 +95,7 @@ export const constantRoutes: RouterType = [
   {
     path: '/projects',
     component: Layout,
+    redirect: '/projects/list',
     meta: { title: 'Projects', icon: 'i-fluent-mdl2:test-beaker-solid' },
     children: [
       {
@@ -144,5 +147,14 @@ export const router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes,
 })
+// 用于退出登录后清除动态添加的路由
+export const resetRouter = () => {
+  const permissionStore = usePermissionStore()
+  const dynamicRoutesNameArr = permissionStore.dynamicRoutes.map(majorRoute => majorRoute.name as string)
+  dynamicRoutesNameArr.forEach((name) => {
+    if (router.hasRoute(name))
+      router.removeRoute(name)
+  })
+}
 
 export default router

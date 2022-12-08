@@ -2,3 +2,7 @@
 #app {
   height: 100vh;
 }
+
+:root {
+  --el-menu-base-level-padding: 18px;
+}

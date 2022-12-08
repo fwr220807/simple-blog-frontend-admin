@@ -7,7 +7,6 @@
 **/
 import { defineStore } from 'pinia'
 import { asyncRoutes, constantRoutes } from '@/router'
-import type { PermissionStateType } from '@/typings/store'
 import type { RouteItemType, RouterType } from '@/typings/router'
 // 判断权限逻辑
 const hasPermission = (roles: Array<string>, route: RouteItemType) => {
@@ -35,22 +34,15 @@ export const filterAsyncRoutes = (routes: RouterType, roles: Array<string>): Rou
 
 export const usePermissionStore = defineStore('permission', {
   state: () => {
-    const state: PermissionStateType = {
-      routes: [],
-      dynamicRoutes: [],
+    return {
+      routes: [] as RouterType,
+      dynamicRoutes: [] as RouterType,
     }
-
-    return state
   },
   actions: {
     generateRoutes(roles: Array<string>) {
       return new Promise<RouterType>((resolve) => {
-        let accessedRoutes
-        if (roles.includes('admin'))
-          accessedRoutes = asyncRoutes || []
-
-        else
-          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+        const accessedRoutes = roles.includes('admin') ? asyncRoutes : filterAsyncRoutes(asyncRoutes, roles)
 
         this.dynamicRoutes = accessedRoutes
         this.routes = constantRoutes.concat(accessedRoutes)

@@ -15,8 +15,3 @@ export interface SettingsStateType {
   showSidebarLogo: boolean
   sidebarTextTheme: boolean
 }
-
-export interface PermissionStateType {
-  routes: RouterType
-  dynamicRoutes: RouterType
-}

@@ -11,7 +11,7 @@ const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.pn
 </script>
 
 <template>
-  <div class="sidebar-logo-container bg-#2b2f3a" relative w-full h-50px lh-50px text-center overflow-hidden
+  <div class="sidebar-logo-container" relative w-full h-50px lh-50px text-center overflow-hidden
        :class="collapse ? 'collapse' : 'no-title'"
   >
     <Transition name="sidebarLogoFade">
@@ -38,7 +38,7 @@ const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.pn
   transition: opacity 1.5s;
 }
 
-.sidebarLogoFade-enter,
+.sidebarLogoFade-enter-from,
 .sidebarLogoFade-leave-to {
   opacity: 0;
 }
@@ -46,24 +46,21 @@ const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.pn
 .sidebar-logo-container  {
   .sidebar-logo-link {
     height: 100%;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .sidebar-logo {
       width: 32px;
       height: 32px;
-      vertical-align: middle;
       margin-right: 12px;
     }
 
     .sidebar-title {
-      display: inline-block;
-      margin: 0;
-      color: #fff;
       font-weight: 600;
       line-height: 50px;
       font-size: 14px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-      vertical-align: middle;
     }
   }
 
