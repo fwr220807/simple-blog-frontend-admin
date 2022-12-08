@@ -1,16 +1,44 @@
-# Vue 3 + TypeScript + Vite
+# simple-blog-frontend-admin
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+基于 Ts + Vite + Vue3 + element-plus 构建的简约风格的个人博客网站的前端后台管理系统。
 
-## Recommended IDE Setup
+目前进度：完成登陆页面，路由权限管理，和布局等...其余正在努力施工中...
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+## 展示
 
-## Type Support For `.vue` Imports in TS
+暂无
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+## 技术栈
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+TypeScript + Vite + Vue3 + element-plus + pinia + vue-router  + axios
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+## 特性
+
+1. SPA 单页面网站；
+2. 首页显示网站数据的可视化；
+3. 文章的管理，包括查看，编辑等功能；
+4. 文章评论的管理；
+5. 文章评论功能；
+6. 项目页的管理；
+7. 友链管理；
+8. 适配移动端。
+
+## 准备
+
+1. nodejs 环境，[指路](https://nodejs.org/en/)；
+2. 启动服务器 server，[指路](https://github.com/fwr220807/simple-blog-server)。
+
+## 构建
+
+```bash
+// 下载项目到本地
+git clone https://github.com/fwr220807/simple-blog-frontend-admin
+// 进入项目目录后，安装依赖
+pnpm install
+// 启动项目
+pnpm dev
+```
+
+## 证书
+
+[MIT](https://github.com/fwr220807/simple-blog-frontend-admin/blob/main/LICENSE)

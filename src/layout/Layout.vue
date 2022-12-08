@@ -61,17 +61,17 @@ const fixedHeader = computed(() => settingsStore.fixedHeader)
 .app-wrapper {
   .sidebar-container {
       transition: width 0.28s;
+      box-shadow:var(--sidebar-box-shadow);
     }
   .main-container {
     flex: 1;
-    background-color: aquamarine;
+    background-color: #fff;
   }
 }
 
 .hideSidebar {
   .sidebar-container {
     width: 54px;
-
     :deep(.el-sub-menu)  {
       .el-sub-menu__icon-arrow  {
         display: none;
@@ -85,6 +85,7 @@ const fixedHeader = computed(() => settingsStore.fixedHeader)
     position: fixed;
     top: 0;
     width: 210px;
+    box-shadow: none;
     transition: transform .28s;
   }
 

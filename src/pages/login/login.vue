@@ -73,7 +73,7 @@ const loginReq = function () {
   userStore
     .login(loginForm)
     .then(() => {
-      ElMessage({ message: t('login.success'), type: 'success' })
+      ElMessage({ message: t('message.loginSuccess'), type: 'success' })
       // 如果 login 页面是重定向进来，则回到 redirect 页面
       router.push({ path: state.redirect || '/', query: state.otherQuery })
     })
@@ -138,7 +138,7 @@ const showPwd = function () {
                     :placeholder="t('login.password')" name="password" tabindex="2" autocomplete="on" @keyup="checkCapsLock"
                     @blur="capsTooltip = false" @keyup.enter="handleLogin"
           />
-          <span class="show-pwd" text-4 cursor-pointer select-none text-gray-4 @click="showPwd">
+          <span class="show-pwd" absolute right-14px text-4 cursor-pointer select-none text-gray-4 @click="showPwd">
             <div :class="
               passwordType === 'password' ? 'i-ph:eye-closed' : 'i-ph:eye'
             "
@@ -150,7 +150,7 @@ const showPwd = function () {
       <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px; padding: 15px 15px"
                  @click.prevent="handleLogin"
       >
-        {{ t('login.logIn') }}
+        {{ t('login.login') }}
       </el-button>
     </el-form>
   </div>
@@ -174,6 +174,7 @@ const showPwd = function () {
     overflow: hidden;
 
     .el-form-item {
+      position: relative;
       border: 1px solid rgba(255, 255, 255, 0.1);
       background-color: rgba(0, 0, 0, 0.1);
       border-radius: 5px;

@@ -1,12 +1,11 @@
 login:
   title: Login Form
-  logIn: Login
+  login: Login
   username: Username
   password: Password
   usernameIsNotEmptyRule: The username can not be empty
   passwordIsNotEmptyRule: The password can not be empty
   passwordLengthRule: Length should be 6 to 18
-  success: Login Success
 settings:
   title: 'Page style setting'
   theme: 'Theme Color'
@@ -14,3 +13,10 @@ settings:
   showSidebarLogo: 'Sidebar Logo'
   fixedHeader: 'Fixed Header'
   sidebarTextTheme: 'Sidebar Text Theme'
+navbar:
+  dashboard: 'Dashboard'
+  github: 'Github'
+  logout: 'Logout'
+message:
+  loginSuccess: Login Success
+  logoutSuccess: Logout Success

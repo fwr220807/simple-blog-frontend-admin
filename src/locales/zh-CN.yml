@@ -1,12 +1,11 @@
 login:
   title: 系统登陆
-  logIn: 登陆
+  login: 登陆
   username: 账号
   password: 密码
   usernameIsNotEmptyRule: 用户名不能为空
   passwordIsNotEmptyRule: 密码不能为空
   passwordLengthRule: 长度应该在 6 到 18 之间
-  success: 登陆成功
 settings:
   title: '系统布局配置'
   theme: '主题色'
@@ -14,3 +13,10 @@ settings:
   showSidebarLogo: '显示侧边栏 Logo'
   fixedHeader: '固定 Header'
   sidebarTextTheme: '侧边栏文字主题色'
+navbar:
+  dashboard: '首页'
+  github: '项目地址'
+  logout: '退出登录'
+message:
+  loginSuccess: 登陆成功
+  logoutSuccess: 退出成功

@@ -31,7 +31,7 @@ const getBreadcrumb = () => {
   const first = matched[0]
 
   if (!isDashboard(first))
-    matched = [{ path: '/dashboard', meta: { title: 'dashboard' } } as any].concat(matched)
+    matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } } as any].concat(matched)
 
   breadcrumbs.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
 }
