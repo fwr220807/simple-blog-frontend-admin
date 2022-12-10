@@ -17,8 +17,9 @@ const userStore = useUserStore()
 const avatar = computed(() => userStore.avatar)
 
 const toggleSidebar = appStore.toggleSidebar
-// 退出登陆
+
 const router = useRouter()
+// 退出登陆
 const logout = async () => {
   await userStore.logout()
   ElMessage({ message: t('message.logoutSuccess'), type: 'success' })
@@ -28,10 +29,12 @@ const logout = async () => {
 
 <template>
   <div class="navbar" h-50px flex justify-between items-center>
+    <!-- 左边栏目，包含打开关闭侧边栏按钮组件 Hamburger 和 显示路由路径的面包屑组件 Breadcrumb -->
     <div class="left-menu" flex items-center>
       <Hamburger :is-active="opened" class="hamburger-container" @toggle-sidebar="toggleSidebar" />
       <Breadcrumb class="breadcrumb-container" />
     </div>
+    <!-- 右边栏目，包含头像和退出登录等相关功能 -->
     <div class="right-menu" mr-30px select-none>
       <el-dropdown trigger="click">
         <div class="avatar-wrapper" w-40px h-40px flex items-baseline>

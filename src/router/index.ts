@@ -50,7 +50,7 @@ export const constantRoutes: RouterType = [
         name: 'Dashboard',
         component: () => import('@/pages/dashboard/dashboard.vue'),
         // using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'Dashboard', icon: 'i-ant-design:dashboard-filled' },
+        meta: { title: 'Dashboard', icon: 'i-ant-design:dashboard-filled', affix: true },
       },
     ],
   },

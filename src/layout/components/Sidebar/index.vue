@@ -35,9 +35,11 @@ const permissionStore = usePermissionStore()
 <template>
   <div :class="{ 'has-logo': showLogo }">
     <el-scrollbar wrap-class="scrollbar-wrapper" view-style="height: 100%">
+      <!-- 侧边栏的 Logo -->
       <SidebarLogo v-if="showLogo" :collapse="!isCollapse" bg-white />
+      <!-- 侧边栏 -->
       <el-menu class="el-menu-vertical" :default-active="activeMenu" :collapse="!isCollapse" background-color="#fff" text-color="#333" active-text-color="#123456" :collapse-transition="false">
-        <SidebarItem v-for="route in permissionStore.routes" :key="route.path" :item="route" :base-path="route.path" />
+        <SidebarItem v-for="routeItem in permissionStore.routes" :key="routeItem.path" :item="routeItem" :base-path="routeItem.path" />
       </el-menu>
     </el-scrollbar>
   </div>

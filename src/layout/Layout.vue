@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { resize } from './resize'
-import { AppMain, Navbar, Settings, Sidebar } from './components'
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import RightPanel from '@/components/RightPanel/index.vue'
 import { Device } from '@/constant/device'
 import { useAppStore } from '@/store/app'
@@ -48,6 +48,7 @@ const fixedHeader = computed(() => settingsStore.fixedHeader)
     <div class="main-container" h-full w-full>
       <div :class="{ 'fixed-header': fixedHeader }">
         <Navbar />
+        <TagsView />
       </div>
       <AppMain />
       <RightPanel v-if="showSettings">

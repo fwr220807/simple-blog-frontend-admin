@@ -13,6 +13,7 @@ defineProps({
 </script>
 
 <template>
+  <!-- 根据判断是否是外链切换不同的标签和行为 -->
   <div>
     <a v-if="isExternal(to)" v-bind="$attrs" :href="to" rel="noopener" target="_blank">
       <slot />
