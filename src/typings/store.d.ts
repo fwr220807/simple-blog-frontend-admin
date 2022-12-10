@@ -18,6 +18,7 @@ export interface SettingsStateType {
 }
 
 export interface TagType {
+  fullPath: string
   path: string
   name: RouteRecordName | null | undefined
   meta: RouteMetaType

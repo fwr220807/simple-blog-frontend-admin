@@ -7,8 +7,9 @@
 -->
 <script lang="ts" setup>
 import { resolve } from 'path'
-import { computed, nextTick, reactive, ref, toRefs, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, nextTick, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { RouteLocationRaw, RouterLink, useRoute, useRouter } from 'vue-router'
+import { pa } from 'element-plus/es/locale'
 import ScrollPane from './ScrollPane.vue'
 import { useTagsViewStore } from '@/store/tagsView'
 import { usePermissionStore } from '@/store/permission'
@@ -37,6 +38,7 @@ const filterAffixTags = (routes: RouterType, basePath = '/') => {
     if (route.meta && route.meta.affix) {
       const tagPath = resolve(basePath, route.path)
       tags.push({
+        fullPath: tagPath,
         path: tagPath,
         name: route.name,
         meta: route.meta,
@@ -69,6 +71,7 @@ const addTags = () => {
   const { name } = route
   if (name) {
     const tags: TagType = {
+      fullPath: route.fullPath,
       path: route.path,
       name: route.name,
       meta: route.meta as RouteMetaType,
@@ -79,9 +82,27 @@ const addTags = () => {
   // 为什么 返回 false
   return false
 }
+
+// const tagsRef = ref<Array<InstanceType<typeof RouterLink>> | null>(null)
+const tagsRef = ref<Array<InstanceType<typeof RouterLink>> | null>(null)
+const scrollContainer = ref<InstanceType<typeof ScrollPane> | null>(null)
+const moveToCurrentTag = () => {
+  nextTick(() => {
+    if (tagsRef.value) {
+      for (const tag of tagsRef.value) {
+        if (tag.$props.to.fullPath === route.path)
+          scrollContainer.value?.moveToTarget(tag)
+        break
+      }
+    }
+
+    // console.log(route)
+  })
+}
 // 监听路由路径变化，添加当前路径到仓库中
 watch(() => route.path, () => {
   addTags()
+  moveToCurrentTag()
 }, { immediate: true })
 // 判断所选标签是否是当前路由的，用于当前显示标签的样式控制
 const isActive = (tag: TagType) => tag.path === route.path
@@ -166,17 +187,21 @@ const handleScroll = () => {
   closeMenu()
 }
 
+onMounted(() => {
+  // console.log(scrollContainer)
+})
+
 const { visible, top, left, selectedTag } = toRefs(state)
 </script>
 
 <template>
   <div ref="tagsViewContainer" class="tags-view-container">
     <!-- tagsView -->
-    <ScrollPane @scroll="handleScroll">
+    <ScrollPane ref="scrollContainer" @scroll="handleScroll">
       <div class="tags-view-wrapper">
-        <router-link v-for="tag in visitedViews" ref="refTag" :key="tag.path" :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query }" @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
+        <RouterLink v-for="tag in visitedViews" ref="tagsRef" :key="tag.path" :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath } as RouteLocationRaw" ml-100px @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
           {{ tag.title }}
-        </router-link>
+        </RouterLink>
       </div>
     </ScrollPane>
     <!-- 右键菜单栏 -->
