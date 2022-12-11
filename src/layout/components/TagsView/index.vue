@@ -11,6 +11,7 @@ import type { ComponentPublicInstance } from 'vue'
 import { computed, nextTick, reactive, ref, toRefs, watch } from 'vue'
 import type { RouteLocationPathRaw } from 'vue-router'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import ScrollPane from './ScrollPane.vue'
 import { useTagsViewStore } from '@/store/tagsView'
 import { usePermissionStore } from '@/store/permission'
@@ -24,6 +25,8 @@ const state = reactive({
   selectedTag: {} as TagType, // 存储右键选中的 Tag
   affixTags: [] as Array<TagType>, // 存储 meta.affix:true 属性的 Tag
 })
+
+const { t } = useI18n()
 
 const tagsViewStore = useTagsViewStore()
 const visitedViews = computed(() => tagsViewStore.visitedViews)
@@ -195,29 +198,93 @@ const { visible, top, left, selectedTag } = toRefs(state)
     <ScrollPane ref="scrollContainer" @scroll="handleScroll">
       <div class="tags-view-wrapper">
         <!-- 此处的 to 属性的 RouteLocationPathRaw 类型拓展了 fullPath?: string 属性，在 @/typings.d.ts -->
-        <RouterLink v-for="tag in visitedViews" :key="tag.path" ref="tagsRef" ml-100px :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
-          {{ tag.title }}
+        <RouterLink v-for="tag in visitedViews" :key="tag.path" ref="tagsRef" class="tags-view-item" ml-100px :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
+          {{ t(`route.${tag.title}`) }}
+          <span v-if="!isAffix(tag)" class="icon-close" @click.prevent="closeSelectedTag(tag)"><i class="i-ep:close" text-12px /></span>
         </RouterLink>
       </div>
     </ScrollPane>
     <!-- 右键菜单栏 -->
-    <ul v-show="visible" :style="{ left: `${left}px`, top: `${top}px` }" class="contextmenu">
+    <ul v-show="visible" :style="{ left: `${left}px`, top: `${top}px` }" class="contextmenu" absolute m-0 z-3000 p-x-5px p-y-0 border-rd-4px text-12px font-normal>
       <li @click="refreshSelectedTag(selectedTag)">
-        Refresh
+        {{ t('tagsView.refresh') }}
       </li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        Close
+        {{ t('tagsView.close') }}
       </li>
       <li @click="closeOthersTags">
-        Close Others
+        {{ t('tagsView.close-others') }}
       </li>
       <li @click="closeAllTags(selectedTag)">
-        Close All
+        {{ t('tagsView.close-all') }}
       </li>
     </ul>
   </div>
 </template>
 
 <style lang="less" scoped>
+.tags-view-container {
+  height: var(--tag-view-height);
+  width: 100%;
+  background: var(--tags-view-background);
+  border-bottom: 1px solid var(--tags-view-border-bottom);
+  box-shadow: var(--tags-view-box-shadow);
+  // position: relative;
 
+  .tags-view-wrapper {
+    .tags-view-item {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      height: 27px;
+      line-height: 26px;
+      border: 1px solid var(--tags-view-item-border-color);
+      color: var(--tags-view-item-color);
+      background: var(--tags-view-item-background);
+      padding: 0 8px;
+      font-size: 12px;
+      margin-left: 5px;
+      margin-top: 3px;
+      border-radius: 3px;
+
+      &:first-of-type {
+        margin-left: 10px;
+      }
+      &:last-of-type {
+        margin-right: 15px;
+      }
+      &.active {
+        background-color: var(--tags-view-item-active-background);
+        color: var(--tags-view-item-active-color);
+        border-color: var(--tags-view-item-active-border-color);
+
+        &::before {
+          content: '';
+          background-color: var(--tags-view-background);
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
+        }
+      }
+
+    }
+  }
+  .contextmenu {
+    background: var(--tags-view-contextmenu-background);
+    color: var(--tags-view-contextmenu-color);
+    box-shadow: var(--tags-view-contextmenu-box-shadow);
+
+    li {
+      margin: 0;
+      padding: 7px 16px;
+      cursor: pointer;
+      &:hover {
+        background: var(--tags-view-contextmenu-hover-background);
+      }
+    }
+  }
+}
 </style>

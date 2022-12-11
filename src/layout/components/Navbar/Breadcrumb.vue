@@ -11,6 +11,9 @@ import type { RouteLocation, RouteLocationMatched } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { compile } from 'path-to-regexp'
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const route = useRoute()
 // 判断当前匹配的的一个父路由是不是 dashboard
@@ -31,7 +34,7 @@ const getBreadcrumb = () => {
   const first = matched[0]
 
   if (!isDashboard(first))
-    matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } } as any].concat(matched)
+    matched = [{ path: '/dashboard', meta: { title: 'dashboard' } } as any].concat(matched)
 
   breadcrumbs.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
 }
@@ -69,8 +72,8 @@ watch(() => route.path, (path) => {
 <template>
   <el-breadcrumb>
     <el-breadcrumb-item v-for="item, index in breadcrumbs" :key="item.path">
-      <span v-if="(item.redirect === 'noredirect' || index === breadcrumbs.length - 1)">{{ item.meta.title }}</span>
-      <a v-else @click="handleLink(item)">{{ item.meta.title }}</a>
+      <span v-if="(item.redirect === 'noredirect' || index === breadcrumbs.length - 1)">{{ t(`route.${item.meta.title}`) }}</span>
+      <a v-else @click="handleLink(item)">{{ t(`route.${item.meta.title}`) }}</a>
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>

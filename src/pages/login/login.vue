@@ -126,8 +126,8 @@ const showPwd = function () {
         />
       </el-form-item>
       <!-- 密码 + 大小写提示 -->
-      <!-- tirrger 和 trigger-keys 设置防止自身触发提示 -->
-      <el-tooltip v-model:visible="capsTooltip" trigger="" :trigger-keys="[]" content="Caps lock is On"
+      <!-- trigger 和 trigger-keys 设置防止自身触发提示 -->
+      <el-tooltip v-model:visible="capsTooltip" trigger="focus" :trigger-keys="[]" content="Caps lock is On"
                   placement="right"
       >
         <el-form-item prop="password">

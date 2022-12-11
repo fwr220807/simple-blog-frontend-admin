@@ -5,13 +5,14 @@
 * @LastEditors: Wren Fan
 * @LastEditTime: 2022-11-28 18:24:53
 **/
+// 下面这个注释勿删！！！否则侧边栏的图标显示不出来
 // @unocss-include
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouterType } from '@/typings/router'
-
 import Layout from '@/layout/Layout.vue'
 import { usePermissionStore } from '@/store/permission'
 
+// 常量路由，任何用户都可以访问
 export const constantRoutes: RouterType = [
   // ** 这个 /redirect 路由还不知道干啥用的
   {
@@ -49,8 +50,8 @@ export const constantRoutes: RouterType = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/pages/dashboard/dashboard.vue'),
-        // using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'Dashboard', icon: 'i-ant-design:dashboard-filled', affix: true },
+        // title 属性存储的是 i18n 国际化配置的属性，具体设置在 @/locales
+        meta: { title: 'dashboard', icon: 'i-ant-design:dashboard-filled', affix: true },
       },
     ],
   },
@@ -58,25 +59,25 @@ export const constantRoutes: RouterType = [
     path: '/posts',
     component: Layout,
     redirect: '/posts/view',
-    meta: { title: 'Posts', icon: 'i-fluent:code-16-regular' },
+    meta: { title: 'posts', icon: 'i-fluent:code-16-regular' },
     children: [
       {
         path: 'view',
         component: () => import('@/pages/posts/view.vue'),
         name: 'View',
-        meta: { title: 'View', icon: 'i-ic:sharp-remove-red-eye' },
+        meta: { title: 'posts-view', icon: 'i-ic:sharp-remove-red-eye' },
       },
       {
         path: 'edit',
         component: () => import('@/pages/posts/edit.vue'),
         name: 'Edit',
-        meta: { title: 'Edit', icon: 'i-tabler:edit' },
+        meta: { title: 'posts-edit', icon: 'i-tabler:edit' },
       },
       {
         path: 'category',
         component: () => import('@/pages/posts/category.vue'),
         name: 'Category',
-        meta: { title: 'Category', icon: 'i-ic:baseline-class' },
+        meta: { title: 'posts-category', icon: 'i-ic:baseline-class' },
       },
     ],
   },
@@ -88,7 +89,7 @@ export const constantRoutes: RouterType = [
         path: 'index',
         name: 'Comments',
         component: () => import('@/pages/comments/index.vue'),
-        meta: { title: 'Comments', icon: 'i-fluent:comment-multiple-28-filled' },
+        meta: { title: 'comments', icon: 'i-fluent:comment-multiple-28-filled' },
       },
     ],
   },
@@ -96,19 +97,19 @@ export const constantRoutes: RouterType = [
     path: '/projects',
     component: Layout,
     redirect: '/projects/list',
-    meta: { title: 'Projects', icon: 'i-fluent-mdl2:test-beaker-solid' },
+    meta: { title: 'projects', icon: 'i-fluent-mdl2:test-beaker-solid' },
     children: [
       {
         path: 'list',
         name: 'ProjectsList',
         component: () => import('@/pages/projects/list.vue'),
-        meta: { title: 'ProjectsList', icon: 'i-ic:sharp-remove-red-eye' },
+        meta: { title: 'projects-list', icon: 'i-ic:sharp-remove-red-eye' },
       },
       {
         path: 'edit',
         name: 'ProjectsEdit',
         component: () => import('@/pages/projects/edit.vue'),
-        meta: { title: 'ProjectsEdit', icon: 'i-tabler:edit' },
+        meta: { title: 'projects-edit', icon: 'i-tabler:edit' },
       },
     ],
   },
@@ -120,14 +121,14 @@ export const constantRoutes: RouterType = [
         path: 'index',
         name: 'Friends',
         component: () => import('@/pages/friends/index.vue'),
-        meta: { title: 'Friends', icon: 'i-ion:people' },
+        meta: { title: 'friends', icon: 'i-ion:people' },
       },
     ],
   },
   // 匹配 404 路由必须要放到最后，别放到动态路由里，否则会有 Warning
   { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true },
 ]
-
+// 动态路由
 export const asyncRoutes: RouterType = [
   {
     path: '/permission',
@@ -137,7 +138,7 @@ export const asyncRoutes: RouterType = [
         path: 'index',
         name: 'Permission',
         component: () => import('@/pages/permission/index.vue'),
-        meta: { title: 'Permission', roles: ['admin'], icon: 'i-fluent-mdl2:permissions-solid' },
+        meta: { title: 'permission', roles: ['admin'], icon: 'i-fluent-mdl2:permissions-solid' },
       },
     ],
   },

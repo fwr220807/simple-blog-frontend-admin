@@ -6,6 +6,7 @@
 * @LastEditTime: 2022-11-28 18:25:25
 **/
 import { defineStore } from 'pinia'
+import { useTagsViewStore } from './tagsView'
 import { getToken, removeToken, setToken } from '@/utils/cookies'
 import { getInfoReq, loginReq } from '@/api/user'
 import type { ObjType } from '@/typings/common'
@@ -24,6 +25,7 @@ export const useUserStore = defineStore('user', {
     }
   },
   actions: {
+    // 清空重置状态
     resetState() {
       return new Promise((resolve) => {
         // 去除 token 的 cookies
@@ -76,6 +78,9 @@ export const useUserStore = defineStore('user', {
         this.resetState().then(() => {
           // 清除添加的动态路由
           resetRouter()
+          // 清除 tagsViewStore 的记录
+          const tagsViewStore = useTagsViewStore()
+          tagsViewStore.deleteAllViews()
           resolve(null)
         })
       })

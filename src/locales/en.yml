@@ -20,3 +20,20 @@ navbar:
 message:
   loginSuccess: Login Success
   logoutSuccess: Logout Success
+route:
+  dashboard: Dashboard
+  posts: Posts
+  posts-view: View
+  posts-edit: Edit
+  posts-category: Category
+  comments: Comments
+  projects: Projects
+  projects-list: Projects List
+  projects-edit: Projects Edit
+  friends: Friends
+  permission: Permission
+tagsView:
+  refresh: Refresh
+  close: Close
+  close-others: Close Others
+  close-all: Close All

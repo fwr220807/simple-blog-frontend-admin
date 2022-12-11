@@ -40,6 +40,7 @@ export const usePermissionStore = defineStore('permission', {
     }
   },
   actions: {
+    // 根据权限数组筛选动态路由
     generateRoutes(roles: Array<string>) {
       return new Promise<RouterType>((resolve) => {
         const accessedRoutes = roles.includes('admin') ? asyncRoutes : filterAsyncRoutes(asyncRoutes, roles)
