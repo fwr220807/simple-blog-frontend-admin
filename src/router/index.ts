@@ -124,6 +124,8 @@ export const constantRoutes: RouterType = [
       },
     ],
   },
+  // 匹配 404 路由必须要放到最后，别放到动态路由里，否则会有 Warning
+  { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true },
 ]
 
 export const asyncRoutes: RouterType = [
@@ -139,8 +141,7 @@ export const asyncRoutes: RouterType = [
       },
     ],
   },
-  // 匹配 404 路由必须要放到最后
-  { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true },
+
 ]
 
 export const router = createRouter({

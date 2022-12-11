@@ -10,18 +10,15 @@ import { resolve } from 'path'
 import { computed, ref } from 'vue'
 import ItemLink from './ItemLink.vue'
 import ItemLogo from './ItemLogo.vue'
-import type { RouteItemType } from '@/typings/router'
+import type { RouteRowType, RouterType } from '@/typings/router'
 import { isExternal } from '@/utils/validate'
 import { useAppStore } from '@/store/app'
 
-const props = defineProps({
-  // route Item
-  item: { type: Object, required: true },
-  // 用于判断是不是子Item
-  isNest: { type: Boolean, default: false },
-  // 基础路径，用于拼接？
-  basePath: { type: String, default: '' },
-})
+const props = defineProps<{
+  item: RouteRowType
+  isNest?: boolean
+  basePath: string
+}>()
 
 // 从仓库提取侧边栏的打开关闭状态，用于控制侧边栏 el-sub-menu 标题的内容隐藏显示
 // el-menu-item 不需要，因为 #title 插槽提供了类似的功能
@@ -30,8 +27,8 @@ const isCollapse = computed(() => appStore.sidebar.opened)
 
 const onlyOneChild: any = ref(null)
 // showSidebarItem 用于判断当前 route 是否直接自己或显示其 children（只有1个 children 的情况）
-const showSidebarItem = (children = [], parent: RouteItemType) => {
-  const showingChildren = children.filter((item: RouteItemType) => {
+const showSidebarItem = (children: RouterType = [], parent: RouteRowType) => {
+  const showingChildren = children.filter((item: RouteRowType) => {
     if (item.hidden) {
       return false
     }
@@ -82,7 +79,7 @@ const resolvePath = (routePath: string) => {
       <el-sub-menu v-else :index="resolvePath(item.path)">
         <template v-if="item.meta" #title>
           <ItemLogo :meta="item.meta" />
-          <span v-if="isCollapse" m-l-10px class="item-title">{{ item.meta.title }}</span>
+          <span v-if="isCollapse" m-l-10px class="item-title">{{ item.meta?.title }}</span>
         </template>
         <SidebarItem v-for="child in item.children" :key="child.path" :is-nest="true" :item="child" :base-path="resolvePath(child.path)" />
       </el-sub-menu>

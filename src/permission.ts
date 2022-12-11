@@ -12,7 +12,7 @@ import { useUserStore } from './store/user'
 import { usePermissionStore } from './store/permission'
 import { getPageTitle } from '@/utils/getPageTitle'
 import router from '@/router'
-import type { RouterRowType } from '@/typings/router'
+import type { RouteRowType } from '@/typings/router'
 
 const whiteList = ['/login', '/404', '/401']
 router.beforeEach(async (to, from, next) => {
@@ -42,13 +42,10 @@ router.beforeEach(async (to, from, next) => {
         try {
           await userStore.getInfo()
           const roles = userStore.roles
-
           const accessRoutes = await permissionStore.generateRoutes(roles)
-
-          accessRoutes.forEach((route: RouterRowType) => {
+          accessRoutes.forEach((route: RouteRowType) => {
             router.addRoute(route)
           })
-
           next({ ...to, replace: true })
         }
         catch (error) {

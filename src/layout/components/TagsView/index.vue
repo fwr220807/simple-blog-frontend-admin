@@ -7,9 +7,10 @@
 -->
 <script lang="ts" setup>
 import { resolve } from 'path'
-import { computed, nextTick, onMounted, reactive, ref, toRefs, watch } from 'vue'
-import { RouteLocationRaw, RouterLink, useRoute, useRouter } from 'vue-router'
-import { pa } from 'element-plus/es/locale'
+import type { ComponentPublicInstance } from 'vue'
+import { computed, nextTick, reactive, ref, toRefs, watch } from 'vue'
+import type { RouteLocationPathRaw } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import ScrollPane from './ScrollPane.vue'
 import { useTagsViewStore } from '@/store/tagsView'
 import { usePermissionStore } from '@/store/permission'
@@ -59,49 +60,47 @@ const initTags = () => {
   const affixTags = (state.affixTags = filterAffixTags(routes.value))
   for (const tag of affixTags) {
     if (tag.name)
-      tagsViewStore.addView(tag)
+      tagsViewStore.addAndUpdateView(tag)
   }
 }
 initTags()
 
 const router = useRouter()
 const route = useRoute()
-// 调用 tagsViewStore 仓库的 addView 方法添加 tags 到仓库
-const addTags = () => {
+// 调用 tagsViewStore 仓库的 addAndUpdateView 方法添加 tags 到仓库
+const addAndUpdateTag = () => {
   const { name } = route
   if (name) {
-    const tags: TagType = {
+    const tag: TagType = {
       fullPath: route.fullPath,
       path: route.path,
       name: route.name,
       meta: route.meta as RouteMetaType,
       query: route.query,
     }
-    tagsViewStore.addView(tags)
+    tagsViewStore.addAndUpdateView(tag)
   }
-  // 为什么 返回 false
-  return false
 }
-
-// const tagsRef = ref<Array<InstanceType<typeof RouterLink>> | null>(null)
-const tagsRef = ref<Array<InstanceType<typeof RouterLink>> | null>(null)
+// tagsRef 类型代表联合 RouterLink 暴露的类型（$props）和组件实例的类型（$el）
+const tagsRef = ref<Array<InstanceType<typeof RouterLink> & ComponentPublicInstance> | null>(null)
+// scrollContainer 的类型获取 ScrollPane 组件暴露的 moveToTarget 方法
 const scrollContainer = ref<InstanceType<typeof ScrollPane> | null>(null)
 const moveToCurrentTag = () => {
   nextTick(() => {
     if (tagsRef.value) {
       for (const tag of tagsRef.value) {
-        if (tag.$props.to.fullPath === route.path)
-          scrollContainer.value?.moveToTarget(tag)
-        break
+        if ((tag.$props.to as RouteLocationPathRaw).path === route.path) {
+          scrollContainer.value?.moveToTarget(tag, tagsRef.value)
+
+          break
+        }
       }
     }
-
-    // console.log(route)
   })
 }
 // 监听路由路径变化，添加当前路径到仓库中
 watch(() => route.path, () => {
-  addTags()
+  addAndUpdateTag()
   moveToCurrentTag()
 }, { immediate: true })
 // 判断所选标签是否是当前路由的，用于当前显示标签的样式控制
@@ -112,12 +111,12 @@ const isAffix = (tag: TagType) => tag.meta && tag.meta.affix
 const toLastView = (visitedViews: Array<TagType>, view: TagType) => {
   const latestView = visitedViews[visitedViews.length - 1]
   if (latestView) {
-    router.push(latestView.path)
+    router.push(latestView.fullPath)
   }
   else {
     // 如果删除后没有一个标签，默认重定向至首页
     if (view.name === 'Dashboard')
-      router.replace({ path: `/redirect${view.path}` })
+      router.replace({ path: `/redirect${view.fullPath}` })
     else
       router.push('/')
   }
@@ -160,10 +159,10 @@ watch(
 // 右键菜单的四个选项事件回调函数
 // 刷新视图标签
 const refreshSelectedTag = (view: TagType) => {
-  const { path } = view
+  const { fullPath } = view
   nextTick(() => {
     router.replace({
-      path: `/redirect${path}`,
+      path: `/redirect${fullPath}`,
     })
   })
 }
@@ -187,10 +186,6 @@ const handleScroll = () => {
   closeMenu()
 }
 
-onMounted(() => {
-  // console.log(scrollContainer)
-})
-
 const { visible, top, left, selectedTag } = toRefs(state)
 </script>
 
@@ -199,7 +194,8 @@ const { visible, top, left, selectedTag } = toRefs(state)
     <!-- tagsView -->
     <ScrollPane ref="scrollContainer" @scroll="handleScroll">
       <div class="tags-view-wrapper">
-        <RouterLink v-for="tag in visitedViews" ref="tagsRef" :key="tag.path" :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath } as RouteLocationRaw" ml-100px @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
+        <!-- 此处的 to 属性的 RouteLocationPathRaw 类型拓展了 fullPath?: string 属性，在 @/typings.d.ts -->
+        <RouterLink v-for="tag in visitedViews" :key="tag.path" ref="tagsRef" ml-100px :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
           {{ tag.title }}
         </RouterLink>
       </div>

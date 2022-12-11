@@ -7,8 +7,10 @@
 -->
 <script lang="ts" setup>
 import { ElScrollbar } from 'element-plus'
-import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash'
+import { useEventListener } from '@/hooks/useCommon'
 
 const emits = defineEmits(['scroll'])
 
@@ -27,19 +29,13 @@ const emitScroll = throttle(() => {
 }, 300, { trailing: true })
 
 onMounted(() => {
-  // const proxy = getCurrentInstance()
-  // console.log('+ ', scrollContainer.value?.wrap$?.offsetWidth, scrollContainer.value?.wrap$?.scrollWidth)
   // 为啥设置为 true 即捕获阶段的回调函数
   const scrollWrapper = scrollContainer.value?.wrap$
-  scrollWrapper?.addEventListener('scroll', emitScroll, true)
-})
-onBeforeUnmount(() => {
-  const scrollWrapper = scrollContainer.value?.wrap$
-  scrollWrapper?.removeEventListener('scroll', emitScroll)
+  scrollWrapper && useEventListener(scrollWrapper, 'scroll', emitScroll, true)
 })
 
 const tagSpacing = 4
-const moveToTarget = (currentTag: HTMLElement, tagList: HTMLElement[]) => {
+const moveToTarget = (currentTag: ComponentPublicInstance, tagList: ComponentPublicInstance[]) => {
   const scrollWrapper = scrollContainer.value?.wrap$ as HTMLDivElement
   const wrapperOffsetWidth = scrollWrapper.offsetWidth
 
@@ -59,8 +55,8 @@ const moveToTarget = (currentTag: HTMLElement, tagList: HTMLElement[]) => {
   }
   else {
     const currenIndex = tagList.findIndex(item => item === currentTag)
-    const prevTag = tagList[currenIndex - 1]
-    const nextTag = tagList[currenIndex + 1]
+    const prevTag = tagList[currenIndex - 1].$el
+    const nextTag = tagList[currenIndex + 1].$el
 
     const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + tagSpacing
     const beforePrevTagOffsetLeft = prevTag.offsetLeft - tagSpacing

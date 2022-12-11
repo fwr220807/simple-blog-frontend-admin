@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-// RouteLocationNormalizedLoaded 为 useRoute 的实例类型
 import type { TagType } from '@/typings/store'
 
 export const useTagsViewStore = defineStore('tagsView', {
@@ -10,13 +9,20 @@ export const useTagsViewStore = defineStore('tagsView', {
     }
   },
   actions: {
-    // 添加标签
-    addView(view: TagType) {
+    // 逻辑，尝试添加标签，如果标签已经存在，再尝试更新，更新的依据是 fullPath，带参数后 fullPath 与 path 会不同
+    // 添加标签，并更新标签信息
+    addAndUpdateView(view: TagType) {
       this.$patch((state) => {
-        // 如果已经添加过了，就不再添加
-        if (state.visitedViews.some(v => v.path === view.path))
-          return
-        // 添加 view
+        // 如果已经添加过了，就不再添加，并检查是否要更新
+        for (let v of state.visitedViews) {
+          if (v.path === view.path) {
+            if (v.fullPath !== view.fullPath)
+              v = Object.assign(v, view)
+
+            return
+          }
+        }
+        // 没有添加过，则添加 view
         state.visitedViews.push(
           Object.assign({}, view, {
             title: view.meta.title || 'no-name',
