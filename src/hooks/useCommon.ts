@@ -6,7 +6,7 @@
 * @LastEditors: Wren Fan
 **/
 
-import { onBeforeUnmount } from 'vue'
+import { onUnmounted } from 'vue'
 
 // 返回一个睡眠后的方法
 export const useSleep = (time: number): Promise<null> => {
@@ -18,15 +18,22 @@ export const useSleep = (time: number): Promise<null> => {
   })
 }
 /**
- * @description 给 dom 添加监听器，使用方法同 addEventListener ，并且会自动清理监听器,
+ * @description
+ * 给 dom 添加监听器，使用方法同 addEventListener ，并且组件卸载后会自动清理监听器,
  * 请在 onMounted 中使用。
+ * @return
+ * 返回会提供一个 stop 方法，可以提前手动调用停止监听
  * */
 export const useEventListener = (targetEl: HTMLElement, eventName: keyof HTMLElementEventMap, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions | undefined) => {
   targetEl.addEventListener(eventName, handler, options)
 
-  onBeforeUnmount(() => {
+  const stop = () => {
     targetEl.removeEventListener(eventName, handler)
-  })
+  }
+
+  onUnmounted(stop)
+
+  return stop
 }
 
 // 为 obj[key] 的形式提供类型检查

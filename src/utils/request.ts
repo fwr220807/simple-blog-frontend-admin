@@ -38,7 +38,7 @@ service.interceptors.response.use((response) => {
         type: 'warning',
       }).then(() => {
         const userStore = useUserStore()
-        userStore.resetToken().then(() => {
+        userStore.resetState().then(() => {
           location.reload()
         })
       })

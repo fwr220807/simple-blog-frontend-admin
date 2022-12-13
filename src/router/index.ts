@@ -22,7 +22,7 @@ export const constantRoutes: RouterType = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/pages/redirect.vue'),
+        component: () => import('@/pages/redirect/index'),
       },
     ],
   },

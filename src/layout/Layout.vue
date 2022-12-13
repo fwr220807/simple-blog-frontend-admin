@@ -37,7 +37,7 @@ const fixedHeader = computed(() => settingsStore.fixedHeader)
 </script>
 
 <template>
-  <div :class="classObj" class="app-wrapper" relative flex h-full w-full>
+  <div :class="classObj" class="app-wrapper" relative flex h-full>
     <!-- mobile 状态下 Sidebar 侧边栏打开状态下的灰幕，点击隐藏 Sidebar -->
     <div v-if="classObj.mobile && sidebar.opened"
          class="drawer-bg bg-#000"
@@ -45,7 +45,7 @@ const fixedHeader = computed(() => settingsStore.fixedHeader)
          @click="handleClickOutside"
     />
     <Sidebar class="sidebar-container" h-full w-210px z-1001 />
-    <div class="main-container" h-full w-full>
+    <div class="main-container" h-full>
       <div :class="{ 'fixed-header': fixedHeader }">
         <Navbar />
         <TagsView />
@@ -59,13 +59,17 @@ const fixedHeader = computed(() => settingsStore.fixedHeader)
 </template>
 
 <style lang="less" scoped>
+@main-container-width: 100%-210px;
 .app-wrapper {
+  width: 100%;
+  // overflow: hidden;
   .sidebar-container {
       transition: width 0.28s;
       box-shadow:var(--sidebar-box-shadow);
     }
   .main-container {
     flex: 1;
+    width: calc(100% - 210px);
     background-color: #fff;
   }
 }

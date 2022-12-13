@@ -19,9 +19,9 @@ const scrollContainer = ref<InstanceType<typeof ElScrollbar> | null>(null)
 
 // 控制 scroll 的回调函数
 const handleScroll = (event: WheelEvent) => {
-  const eventDelta = -event.deltaY * 40
+  const eventDelta = -event.deltaY
   const scrollWrapper = scrollContainer.value?.wrap$
-  scrollWrapper && (scrollWrapper.scrollLeft += eventDelta / 4)
+  scrollWrapper && (scrollWrapper.scrollLeft += eventDelta)
 }
 
 const emitScroll = throttle(() => {
@@ -81,5 +81,8 @@ defineExpose({
 </template>
 
 <style lang="less" scoped>
-
+.scroll-container {
+  white-space: nowrap;
+  width: 100%;
+}
 </style>

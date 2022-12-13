@@ -17,6 +17,8 @@ import { useTagsViewStore } from '@/store/tagsView'
 import { usePermissionStore } from '@/store/permission'
 import type { RouteMetaType, RouterType } from '@/typings/router'
 import type { TagType } from '@/typings/store'
+import { useAppStore } from '@/store/app'
+import { Device } from '@/constant/device'
 
 const state = reactive({
   visible: false, // 控制右键菜单的显示与关闭
@@ -132,6 +134,7 @@ const closeSelectedTag = (view: TagType) => {
   })
 }
 // 打开右键菜单，计算菜单的显示位置
+const appStore = useAppStore()
 const tagsViewContainer = ref<HTMLElement | null>(null)
 const openMenu = (tag: TagType, event: PointerEvent) => {
   const menuMinWidth = 105
@@ -140,7 +143,7 @@ const openMenu = (tag: TagType, event: PointerEvent) => {
   const maxLeft = offsetWidth - menuMinWidth
   const left = event.clientX - offsetLeft + 15
 
-  state.left = Math.min(maxLeft, left)
+  state.left = Math.min(maxLeft, left) + (appStore.device === Device.Mobile ? 0 : appStore.sidebar.opened ? 210 : 54)
   state.top = event.clientY
   state.visible = true
   state.selectedTag = tag
@@ -198,9 +201,9 @@ const { visible, top, left, selectedTag } = toRefs(state)
     <ScrollPane ref="scrollContainer" @scroll="handleScroll">
       <div class="tags-view-wrapper">
         <!-- 此处的 to 属性的 RouteLocationPathRaw 类型拓展了 fullPath?: string 属性，在 @/typings.d.ts -->
-        <RouterLink v-for="tag in visitedViews" :key="tag.path" ref="tagsRef" class="tags-view-item" ml-100px :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
+        <RouterLink v-for="tag in visitedViews" :key="tag.path" ref="tagsRef" class="tags-view-item" :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" @contextmenu.prevent="openMenu(tag, $event)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
           {{ t(`route.${tag.title}`) }}
-          <span v-if="!isAffix(tag)" class="icon-close" @click.prevent="closeSelectedTag(tag)"><i class="i-ep:close" text-12px /></span>
+          <span v-if="!isAffix(tag)" class="icon-close" @click.prevent="closeSelectedTag(tag)"><i class="i-ep:close" /></span>
         </RouterLink>
       </div>
     </ScrollPane>
@@ -233,6 +236,7 @@ const { visible, top, left, selectedTag } = toRefs(state)
 
   .tags-view-wrapper {
     .tags-view-item {
+      // width: 200px;
       display: inline-block;
       position: relative;
       cursor: pointer;
@@ -267,6 +271,24 @@ const { visible, top, left, selectedTag } = toRefs(state)
           border-radius: 50%;
           position: relative;
           margin-right: 2px;
+        }
+      }
+
+      .icon-close {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        transform-origin: 100% 50%;
+
+        &:hover {
+          background-color: var(--tags-view-close-icon-hover-background);
+          color: var(--tags-view-close-icon-hover-color);
+        }
+
+        i {
+          font-size: 12px;
         }
       }
 

@@ -22,4 +22,6 @@
   --tags-view-item-active-background: #42b983;
   --tags-view-item-active-color: #fff;
   --tags-view-item-active-border-color: #42b983;
+  --tags-view-close-icon-hover-background: #b4bccc;
+  --tags-view-close-icon-hover-color: #fff;
 }
