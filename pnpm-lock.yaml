@@ -26,6 +26,7 @@ specifiers:
   unplugin-auto-import: ^0.11.4
   unplugin-vue-components: ^0.22.9
   vite: ^3.2.3
+  vite-plugin-vue-setup-extend: ^0.4.0
   vue: ^3.2.41
   vue-i18n: ^9.2.2
   vue-router: ^4.1.6
@@ -62,6 +63,7 @@ devDependencies:
   unplugin-auto-import: 0.11.4
   unplugin-vue-components: 0.22.9_vue@3.2.45
   vite: 3.2.4_mp5lu76ee5qtwstsyca37sdhqi
+  vite-plugin-vue-setup-extend: 0.4.0_vite@3.2.4
   vue-tsc: 1.0.9_typescript@4.9.3
 
 packages:
@@ -3756,6 +3758,16 @@ packages:
     dependencies:
       spdx-correct: 3.1.1
       spdx-expression-parse: 3.0.1
+    dev: true
+
+  /vite-plugin-vue-setup-extend/0.4.0_vite@3.2.4:
+    resolution: {integrity: sha512-WMbjPCui75fboFoUTHhdbXzu4Y/bJMv5N9QT9a7do3wNMNHHqrk+Tn2jrSJU0LS5fGl/EG+FEDBYVUeWIkDqXQ==}
+    peerDependencies:
+      vite: '>=2.0.0'
+    dependencies:
+      '@vue/compiler-sfc': 3.2.45
+      magic-string: 0.25.9
+      vite: 3.2.4_mp5lu76ee5qtwstsyca37sdhqi
     dev: true
 
   /vite/3.2.4_mp5lu76ee5qtwstsyca37sdhqi:

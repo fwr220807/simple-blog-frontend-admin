@@ -13,8 +13,8 @@ import Layout from '@/layout/Layout.vue'
 import { usePermissionStore } from '@/store/permission'
 
 // 常量路由，任何用户都可以访问
+// meta 的 title 属性存储的是 i18n 国际化配置的属性，具体设置在 @/locales
 export const constantRoutes: RouterType = [
-  // ** 这个 /redirect 路由还不知道干啥用的
   {
     path: '/redirect',
     component: Layout,
@@ -29,6 +29,7 @@ export const constantRoutes: RouterType = [
   {
     path: '/login',
     component: () => import('@/pages/login/login.vue'),
+    meta: { title: 'login' },
     hidden: true,
   },
   {
@@ -48,9 +49,9 @@ export const constantRoutes: RouterType = [
     children: [
       {
         path: 'dashboard',
-        name: 'Dashboard',
+        name: 'dashboard',
         component: () => import('@/pages/dashboard/dashboard.vue'),
-        // title 属性存储的是 i18n 国际化配置的属性，具体设置在 @/locales
+
         meta: { title: 'dashboard', icon: 'i-ant-design:dashboard-filled', affix: true },
       },
     ],
@@ -64,19 +65,19 @@ export const constantRoutes: RouterType = [
       {
         path: 'view',
         component: () => import('@/pages/posts/view.vue'),
-        name: 'View',
+        name: 'view',
         meta: { title: 'posts-view', icon: 'i-ic:sharp-remove-red-eye' },
       },
       {
         path: 'edit',
         component: () => import('@/pages/posts/edit.vue'),
-        name: 'Edit',
+        name: 'edit',
         meta: { title: 'posts-edit', icon: 'i-tabler:edit' },
       },
       {
         path: 'category',
         component: () => import('@/pages/posts/category.vue'),
-        name: 'Category',
+        name: 'category',
         meta: { title: 'posts-category', icon: 'i-ic:baseline-class' },
       },
     ],
@@ -87,7 +88,7 @@ export const constantRoutes: RouterType = [
     children: [
       {
         path: 'index',
-        name: 'Comments',
+        name: 'comments',
         component: () => import('@/pages/comments/index.vue'),
         meta: { title: 'comments', icon: 'i-fluent:comment-multiple-28-filled' },
       },
@@ -101,13 +102,13 @@ export const constantRoutes: RouterType = [
     children: [
       {
         path: 'list',
-        name: 'ProjectsList',
+        name: 'projectsList',
         component: () => import('@/pages/projects/list.vue'),
         meta: { title: 'projects-list', icon: 'i-ic:sharp-remove-red-eye' },
       },
       {
         path: 'edit',
-        name: 'ProjectsEdit',
+        name: 'projectsEdit',
         component: () => import('@/pages/projects/edit.vue'),
         meta: { title: 'projects-edit', icon: 'i-tabler:edit' },
       },
@@ -119,14 +120,12 @@ export const constantRoutes: RouterType = [
     children: [
       {
         path: 'index',
-        name: 'Friends',
+        name: 'friends',
         component: () => import('@/pages/friends/index.vue'),
         meta: { title: 'friends', icon: 'i-ion:people' },
       },
     ],
   },
-  // 匹配 404 路由必须要放到最后，别放到动态路由里，否则会有 Warning
-  { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true },
 ]
 // 动态路由
 export const asyncRoutes: RouterType = [
@@ -136,13 +135,14 @@ export const asyncRoutes: RouterType = [
     children: [
       {
         path: 'index',
-        name: 'Permission',
+        name: 'permission',
         component: () => import('@/pages/permission/index.vue'),
         meta: { title: 'permission', roles: ['admin'], icon: 'i-fluent-mdl2:permissions-solid' },
       },
     ],
   },
-
+  // 匹配 404 路由必须要放到最后
+  { path: '/:pathMatch(.*)*', name: 'notFound404', redirect: '/404', hidden: true },
 ]
 
 export const router = createRouter({

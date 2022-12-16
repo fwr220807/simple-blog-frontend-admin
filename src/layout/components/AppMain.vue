@@ -1,38 +1,51 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { useAppStore } from '@/store/app'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { useTagsViewStore } from '@/store/tagsView'
 
-const appStore = useAppStore()
-const toggleSidebar = appStore.toggleSidebar
-
-const { locale } = useI18n()
-
-const handleLocale = (lo: string) => {
-  locale.value = lo
-}
+const tagsViewStore = useTagsViewStore()
+const cachedViews = computed(() => tagsViewStore.cachedViews)
+const route = useRoute()
+const key = computed(() => route.path)
 </script>
 
 <template>
-  <div>
-    appmain
-    <button @click="toggleSidebar">
-      侧边栏伸缩
-    </button>
-    <br>
-    <button class="bg-pink" @click="handleLocale('zh-CN')">
-      切换成中文
-    </button>
-    <button class="bg-yellow" @click="handleLocale('en')">
-      切换成英文
-    </button>
-    <br>
-    <router-link to="/posts/view/hello/gou">
-      测试按钮
-    </router-link>
-    <router-view />
+  <div class="app-main">
+    <router-view v-slot="{ Component }">
+      <transition name="fade-transform" mode="out-in">
+        <!-- cachedViews 保存的是路由 name，而 includes 属性对应的是组件的 name -->
+        <!-- 而 vue3 script setup 会自动推断组件 name，所以需要我们手动控制组件的 name 与路由的 name 对应上 -->
+        <!-- 借助 vite-plugin-vue-setup-extend 插件可以在 script 标签添加对应的组件 name -->
+        <keep-alive :include="cachedViews">
+          <component :is="Component" :key="key" />
+        </keep-alive>
+      </transition>
+    </router-view>
   </div>
 </template>
 
 <style lang="less" scoped>
+.app-main {
+  min-height: calc(100vh - 30px);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.fixed-header+.app-main {
+  padding-top: 50px;
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
+
+.hasTagsView {
+  .app-main {
+    /* 82 = navbar + tags-view = 50 + 32 */
+    min-height: calc(100vh - 82px);
+  }
+
+  .fixed-header+.app-main {
+    padding-top: 82px;
+  }
+}
 </style>

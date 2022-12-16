@@ -10,7 +10,6 @@ import 'nprogress/nprogress.css'
 import { getToken } from './utils/cookies'
 import { useUserStore } from './store/user'
 import { usePermissionStore } from './store/permission'
-import { getPageTitle } from '@/utils/getPageTitle'
 import router from '@/router'
 import type { RouteRowType } from '@/typings/router'
 
@@ -18,9 +17,6 @@ const whiteList = ['/login', '/404', '/401']
 router.beforeEach(async (to, from, next) => {
   // 进度条开始加载
   NProgress.start()
-
-  // 设置 page 标题
-  document.title = getPageTitle(to.meta.title as string)
 
   const hasToken = getToken()
 
@@ -35,9 +31,11 @@ router.beforeEach(async (to, from, next) => {
       const hasRoles = userStore.roles && userStore.roles.length > 0
       // hasRoles 值意味着是否已经加载了权限路由
       if (hasRoles) {
+        // 获取了权限路由
         next()
       }
       else {
+        // 没有获取权限路由
         // 获取计算权限路由
         try {
           await userStore.getInfo()
@@ -46,6 +44,7 @@ router.beforeEach(async (to, from, next) => {
           accessRoutes.forEach((route: RouteRowType) => {
             router.addRoute(route)
           })
+
           next({ ...to, replace: true })
         }
         catch (error) {

@@ -6,6 +6,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Unocss from 'unocss/vite'
 import vue from '@vitejs/plugin-vue'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -36,6 +37,7 @@ export default defineConfig({
       compositionOnly: true,
       include: [resolve(__dirname, './src/locales/**')],
     }),
+    VueSetupExtend(),
   ],
   server: {
     proxy: {

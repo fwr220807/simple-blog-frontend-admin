@@ -20,8 +20,8 @@ export interface SettingsStateType {
 export interface TagType {
   fullPath: string
   path: string
-  name: RouteRecordName | null | undefined
   meta: RouteMetaType
+  name?: RouteRecordName | null
   title?: string // 把 meta 里的 title 提取出来
   query?: LocationQuery
 }

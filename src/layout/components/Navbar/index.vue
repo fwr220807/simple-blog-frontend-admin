@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -8,7 +8,7 @@ import Breadcrumb from './Breadcrumb.vue'
 import { useAppStore } from '@/store/app'
 import { useUserStore } from '@/store/user'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const appStore = useAppStore()
 const opened = computed(() => appStore.sidebar.opened)
@@ -17,6 +17,14 @@ const userStore = useUserStore()
 const avatar = computed(() => userStore.avatar)
 
 const toggleSidebar = appStore.toggleSidebar
+const toggleLanguage = appStore.toggleLanguage
+// 监听 language，修改正在显示的语言
+watch(() => appStore.language, (value) => {
+  // 等菜单收起来后再改变语言，防止发生菜单容器错动
+  setTimeout(() => {
+    locale.value = value
+  }, 300)
+})
 
 const router = useRouter()
 // 退出登陆
@@ -51,6 +59,9 @@ const logout = async () => {
             <a target="_blank" href="https://github.com/fwr220807/simple-blog-frontend-admin">
               <el-dropdown-item>{{ t('navbar.github') }}</el-dropdown-item>
             </a>
+            <el-dropdown-item @click="toggleLanguage">
+              {{ t('navbar.changeLanguage') }}
+            </el-dropdown-item>
             <el-dropdown-item divided @click="logout">
               {{ t('navbar.logout') }}
             </el-dropdown-item>

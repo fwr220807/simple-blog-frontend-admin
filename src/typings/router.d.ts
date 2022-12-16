@@ -15,8 +15,8 @@ export interface ExpandRouteItemType {
 
 // 此处为路由拓展的 meta 类型
 export interface ExpandMetaType {
-  title: string // 路由的标题
   icon?: string // 用处存放路由的 uno-icon 值
+  noCache?: boolean // 是否不缓存路由，true 为不缓存
   roles?: Array<string> // 该路由的权限
   affix?: boolean // 该路由是否粘滞在 tagsView 组件上
 }

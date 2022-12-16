@@ -20,6 +20,7 @@ const showLogo = computed(() => settingsStore.showSidebarLogo)
 const appStore = useAppStore()
 const isCollapse = computed(() => appStore.sidebar.opened)
 const route = useRoute()
+// 控制路由转跳后自动展开相关的子菜单
 const activeMenu = computed(() => {
   const { meta, path } = route
   // activeMenu 还不知道干嘛用
@@ -38,7 +39,7 @@ const permissionStore = usePermissionStore()
       <!-- 侧边栏的 Logo -->
       <SidebarLogo v-if="showLogo" :collapse="!isCollapse" bg-white />
       <!-- 侧边栏 -->
-      <el-menu class="el-menu-vertical" :default-active="activeMenu" :collapse="!isCollapse" background-color="#fff" text-color="#333" active-text-color="#123456" :collapse-transition="false">
+      <el-menu class="el-menu-vertical" :default-active="activeMenu" :collapse="!isCollapse" background-color="#fff" :collapse-transition="false">
         <SidebarItem v-for="routeItem in permissionStore.routes" :key="routeItem.path" :item="routeItem" :base-path="routeItem.path" />
       </el-menu>
     </el-scrollbar>

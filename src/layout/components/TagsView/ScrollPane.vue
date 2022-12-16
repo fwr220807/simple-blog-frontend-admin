@@ -23,7 +23,7 @@ const handleScroll = (event: WheelEvent) => {
   const scrollWrapper = scrollContainer.value?.wrap$
   scrollWrapper && (scrollWrapper.scrollLeft += eventDelta)
 }
-
+// 用于触发父组件给子组件定义的 'scroll' 自定义事件
 const emitScroll = throttle(() => {
   emits('scroll')
 }, 300, { trailing: true })
@@ -35,8 +35,11 @@ onMounted(() => {
 })
 
 const tagSpacing = 4
+// 容器的 scroll 的控制逻辑
 const moveToTarget = (currentTag: ComponentPublicInstance, tagList: ComponentPublicInstance[]) => {
+  // scroll 容器
   const scrollWrapper = scrollContainer.value?.wrap$ as HTMLDivElement
+  // 容器的 offset 宽度
   const wrapperOffsetWidth = scrollWrapper.offsetWidth
 
   let firstTag = null
@@ -69,7 +72,7 @@ const moveToTarget = (currentTag: ComponentPublicInstance, tagList: ComponentPub
 }
 
 defineExpose({
-  /** @description 移动到当前的 tag */
+/** @description 移动到当前的 tag */
   moveToTarget,
 })
 </script>

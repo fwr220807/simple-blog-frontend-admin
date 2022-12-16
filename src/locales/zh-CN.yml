@@ -16,6 +16,7 @@ settings:
 navbar:
   dashboard: 首页
   github: 项目地址
+  changeLanguage: '英文'
   logout: 退出登录
 message:
   loginSuccess: 登陆成功
@@ -25,13 +26,14 @@ route:
   posts: 博文
   posts-view: 管理
   posts-edit: 撰写
-  posts-category: 分类 / 标签
+  posts-category: 栏目
   comments: 评论
   projects: 项目
   projects-list: 项目列表
   projects-edit: 创建项目
   friends: 朋友们
   permission: 权限管理
+  login: 登陆
 tagsView:
   refresh: 刷新
   close: 关闭

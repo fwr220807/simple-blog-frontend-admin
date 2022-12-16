@@ -16,6 +16,7 @@ settings:
 navbar:
   dashboard: 'Dashboard'
   github: 'Github'
+  changeLanguage: 'Simplified Chinese'
   logout: 'Logout'
 message:
   loginSuccess: Login Success
@@ -32,6 +33,7 @@ route:
   projects-edit: Projects Edit
   friends: Friends
   permission: Permission
+  login: Login
 tagsView:
   refresh: Refresh
   close: Close

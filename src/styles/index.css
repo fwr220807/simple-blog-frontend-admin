@@ -7,6 +7,7 @@
   --el-menu-base-level-padding: 18px;
   --sidebar-box-shadow: 1px 0 4px rgba(0, 21, 41, 0.08);
   --navbar-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  --fixed-header-box-shadow: 0 1px 3px 0 rgba(71, 17, 17, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   /* tag-view */
   --tag-view-height: 32px;
   --tags-view-background: #fff;
@@ -14,7 +15,6 @@
   --tags-view-item-border-color: #d8dce5;
   --tags-view-item-color: #495060;
   --tags-view-item-background: #fff;
-  --tags-view-box-shadow: 0 1px 3px 0 rgba(71, 17, 17, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   --tags-view-contextmenu-background: #fff;
   --tags-view-contextmenu-color: #333;
   --tags-view-contextmenu-box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);

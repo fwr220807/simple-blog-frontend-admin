@@ -6,14 +6,20 @@
 * @LastEditors: Wren Fan
 -->
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { getPageTitle } from '@/utils/getPageTitle'
+const { t, locale } = useI18n()
+
+const route = useRoute()
+// 监听路由变化和语言的设置，动态设置网页 page 标题
+watch([() => route.path, locale], () => {
+  document.title = getPageTitle(t(`route.${route.meta.title}`))
+})
 </script>
 
 <template>
-  <!-- HelloWorld
-  <button @click="click">
-    按钮
-  </button> -->
   <router-view />
 </template>
 

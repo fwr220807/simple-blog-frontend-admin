@@ -142,7 +142,7 @@ const openMenu = (tag: TagType, event: PointerEvent) => {
   const offsetWidth = tagsViewContainer.value?.offsetWidth as number
   const maxLeft = offsetWidth - menuMinWidth
   const left = event.clientX - offsetLeft + 15
-
+  // left 根据侧边栏的宽度作出相应的修正值
   state.left = Math.min(maxLeft, left) + (appStore.device === Device.Mobile ? 0 : appStore.sidebar.opened ? 210 : 54)
   state.top = event.clientY
   state.visible = true
@@ -231,8 +231,6 @@ const { visible, top, left, selectedTag } = toRefs(state)
   width: 100%;
   background: var(--tags-view-background);
   border-bottom: 1px solid var(--tags-view-border-bottom);
-  box-shadow: var(--tags-view-box-shadow);
-  // position: relative;
 
   .tags-view-wrapper {
     .tags-view-item {

@@ -1,3 +1,4 @@
+// import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getToken } from './cookies'
@@ -7,6 +8,19 @@ const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 5000,
 })
+// // 泛型接口,T的类型支持
+// export interface IResponseData<T = any> {
+//   code: number
+//   message?: string
+//   data: T
+// }
+
+// // 通用的请求函数
+// export async function request<T>(config: AxiosRequestConfig) {
+//   return service
+//     .request<IResponseData<T>>(config)
+//     .then(res => res.data.data)
+// }
 
 service.interceptors.request.use((config) => {
   const userStore = useUserStore()
@@ -21,8 +35,8 @@ service.interceptors.request.use((config) => {
 
 service.interceptors.response.use((response) => {
   const res = response.data
-
-  if (res.code !== 200) {
+  // 如果没有 code 属性，则是外部链接
+  if (res.code && res.code !== 200) {
     ElMessage({
       message: res.message || 'Error',
       type: 'error',
