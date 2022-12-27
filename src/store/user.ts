@@ -8,7 +8,7 @@
 import { defineStore } from 'pinia'
 import { useTagsViewStore } from './tagsView'
 import { getToken, removeToken, setToken } from '@/utils/cookies'
-import { getInfoReq, loginReq } from '@/api/user'
+import { getUserInfoReq, loginReq } from '@/api/user'
 import type { ObjType } from '@/typings/common'
 import { resetRouter } from '@/router'
 
@@ -52,9 +52,9 @@ export const useUserStore = defineStore('user', {
         })
       })
     },
-    getInfo() {
+    getUserInfo() {
       return new Promise((resolve, reject) => {
-        getInfoReq().then((response: ObjType) => {
+        getUserInfoReq().then((response: ObjType) => {
           const { data } = response
           if (!data)
             throw new Error('Verification failed, please Login again.')

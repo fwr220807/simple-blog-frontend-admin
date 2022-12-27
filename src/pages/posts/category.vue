@@ -1,4 +1,4 @@
-<script lang="ts" setup name="category">
+<script lang="ts" setup name="postsCategory">
 
 </script>
 

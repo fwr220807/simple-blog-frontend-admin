@@ -39,3 +39,5 @@ tagsView:
   close: 关闭
   close-others: 关闭其他
   close-all: 全部关闭
+dashboard:
+  textCopySuccess: 文本已复制

@@ -10,6 +10,7 @@ import 'nprogress/nprogress.css'
 import { getToken } from './utils/cookies'
 import { useUserStore } from './store/user'
 import { usePermissionStore } from './store/permission'
+import { useAppStore } from './store/app'
 import router from '@/router'
 import type { RouteRowType } from '@/typings/router'
 
@@ -27,6 +28,7 @@ router.beforeEach(async (to, from, next) => {
     }
     else {
       const userStore = useUserStore()
+      const appStore = useAppStore()
       const permissionStore = usePermissionStore()
       const hasRoles = userStore.roles && userStore.roles.length > 0
       // hasRoles 值意味着是否已经加载了权限路由
@@ -38,7 +40,10 @@ router.beforeEach(async (to, from, next) => {
         // 没有获取权限路由
         // 获取计算权限路由
         try {
-          await userStore.getInfo()
+          // 获取博客主站信息
+          await appStore.getBlogInfo()
+          // 获取用户信息
+          await userStore.getUserInfo()
           const roles = userStore.roles
           const accessRoutes = await permissionStore.generateRoutes(roles)
           accessRoutes.forEach((route: RouteRowType) => {

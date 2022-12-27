@@ -1,4 +1,4 @@
-<script lang="ts" setup name="edit">
+<script lang="ts" setup name="postsEdit">
 
 </script>
 

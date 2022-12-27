@@ -65,19 +65,19 @@ export const constantRoutes: RouterType = [
       {
         path: 'view',
         component: () => import('@/pages/posts/view.vue'),
-        name: 'view',
+        name: 'postsView',
         meta: { title: 'posts-view', icon: 'i-ic:sharp-remove-red-eye' },
       },
       {
         path: 'edit',
         component: () => import('@/pages/posts/edit.vue'),
-        name: 'edit',
+        name: 'postsEdit',
         meta: { title: 'posts-edit', icon: 'i-tabler:edit' },
       },
       {
         path: 'category',
         component: () => import('@/pages/posts/category.vue'),
-        name: 'category',
+        name: 'postsCategory',
         meta: { title: 'posts-category', icon: 'i-ic:baseline-class' },
       },
     ],
